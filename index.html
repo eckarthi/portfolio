@@ -1,767 +1,1212 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Karthikeyan Elango Chitra | M.Sc. Electromobility</title>
-  <!-- Load Inter font with clean system fallbacks -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Karthikeyan Elango Chitra | Modelling, Simulation, Automation &amp; R&amp;D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            charcoal: {
+              950: '#111214',
+              900: '#141517',
+              850: '#181a1d',
+              800: '#1d2024',
+              700: '#272b30',
+            },
+            tealAccent: '#4fd1c5',
+            amberAccent: '#d6893e',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
   <style>
-    /* ==========================================================================
-       Design Tokens & Minimalist Palette
-       Low-contrast, neutral academic/engineering aesthetic
-       ========================================================================== */
+    /* Base Dark Charcoal Styling & Scrollbars */
     :root {
-      --bg-page: #fafafa;
-      --bg-surface: #ffffff;
-      --border-subtle: #e5e7eb;
-      --border-strong: #d1d5db;
-      --text-primary: #1f2937;
-      --text-secondary: #4b5563;
-      --text-muted: #6b7280;
-      --accent-slate: #2c5282;
-      --accent-hover: #1e3a5f;
-      --tag-bg: #f3f4f6;
-      --max-width: 860px;
-    }
-
-    /* Reset & Base Typography */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
+      color-scheme: dark;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background-color: var(--bg-page);
-      color: var(--text-primary);
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
+      background-color: #141517;
+      color: #f1f5f9;
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
     }
 
-    a {
-      color: var(--accent-slate);
-      text-decoration: none;
-      transition: color 0.15s ease;
+    /* Full-Viewport Scroll-Reactive Mechanical Canvas */
+    #mechanical-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    a:hover {
-      color: var(--accent-hover);
-      text-decoration: underline;
+    /* Ensure all page content layers cleanly above the schematic canvas */
+    .content-layer {
+      position: relative;
+      z-index: 10;
     }
 
-    /* ==========================================================================
-       Top Navigation Bar
-       ========================================================================== */
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background-color: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(6px);
-      border-bottom: 1px solid var(--border-subtle);
+    /* Gradient Portrait Ring (Teal to Warm Amber) */
+    .portrait-ring {
+      background: linear-gradient(145deg, #4fd1c5 0%, #3b827b 45%, #d6893e 100%);
+      padding: 5px;
+      border-radius: 9999px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(79, 209, 197, 0.12);
     }
 
-    .nav-container {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0.85rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
+    /* Subtle Glass Panels so Mechanical Kinematics Stay Visible Behind Cards */
+    .glass-panel {
+      background: rgba(24, 26, 29, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: border-color 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
     }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      flex-wrap: wrap;
-      list-style: none;
+    .glass-panel:hover {
+      border-color: rgba(79, 209, 197, 0.35);
+      background: rgba(29, 32, 36, 0.88);
     }
 
-    .nav-links a {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      text-decoration: none;
+    /* Active Navigation Underline */
+    .nav-link {
+      position: relative;
+      letter-spacing: 0.14em;
     }
 
-    .nav-links a:hover {
-      color: var(--accent-slate);
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      background-color: #d6893e;
+      transition: width 0.25s ease;
     }
 
-    .btn-cv {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.4rem 0.85rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--accent-slate);
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border-strong);
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background-color 0.15s ease, border-color 0.15s ease;
-    }
-
-    .btn-cv:hover {
-      background-color: var(--tag-bg);
-      border-color: var(--accent-slate);
-      text-decoration: none;
-    }
-
-    /* ==========================================================================
-       Main Container & Section Architecture
-       ========================================================================== */
-    .container {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
-    }
-
-    section {
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    section:last-of-type {
-      border-bottom: none;
-    }
-
-    .section-title {
-      font-size: 0.82rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent-slate);
-      margin-bottom: 1.5rem;
-    }
-
-    /* ==========================================================================
-       Hero / About Section
-       ========================================================================== */
-    .hero {
-      padding-top: 0.5rem;
-      padding-bottom: 2.25rem;
-    }
-
-    .hero-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1.75rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .hero-identity h1 {
-      font-size: 1.85rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-      line-height: 1.25;
-      margin-bottom: 0.35rem;
-    }
-
-    .hero-role {
-      font-size: 1.02rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 0.85rem;
-    }
-
-    .contact-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.5rem 1.15rem;
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-    }
-
-    .contact-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .contact-separator {
-      color: var(--border-strong);
-      user-select: none;
-    }
-
-    /* Optional Profile Avatar with Clean Initials Monogram Fallback */
-    .avatar-wrapper {
-      width: 84px;
-      height: 84px;
-      border-radius: 50%;
-      border: 1px solid var(--border-strong);
-      background-color: var(--bg-surface);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .avatar-wrapper img {
+    .nav-link:hover::after,
+    .nav-link.active::after {
       width: 100%;
-      height: 100%;
+    }
+
+    /* Portrait Image Framing for profile-pic-2.png */
+    .portrait-img {
       object-fit: cover;
-      display: block;
-    }
-
-    .avatar-initials {
-      font-size: 1.25rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      color: var(--accent-slate);
-    }
-
-    .hero-summary {
-      font-size: 0.96rem;
-      color: var(--text-secondary);
-      max-width: 76ch;
-    }
-
-    /* ==========================================================================
-       Experience Timeline / Entries
-       ========================================================================== */
-    .entry-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.85rem;
-    }
-
-    .entry-item {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .entry-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 0.25rem 1rem;
-      margin-bottom: 0.45rem;
-    }
-
-    .entry-title {
-      font-size: 1.02rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .entry-org {
-      font-weight: 500;
-      color: var(--text-secondary);
-    }
-
-    .entry-date {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-
-    .entry-bullets {
-      margin-left: 1.15rem;
-      margin-bottom: 0.65rem;
-      color: var(--text-secondary);
-      font-size: 0.93rem;
-    }
-
-    .entry-bullets li {
-      margin-bottom: 0.35rem;
-    }
-
-    .entry-bullets li:last-child {
-      margin-bottom: 0;
-    }
-
-    .skills-inline {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.25rem;
-    }
-
-    .skill-pill {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      background-color: var(--tag-bg);
-      border: 1px solid var(--border-subtle);
-      padding: 0.15rem 0.55rem;
-      border-radius: 4px;
-    }
-
-    /* ==========================================================================
-       Core Skills 2x2 Grid
-       ========================================================================== */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
-
-    .skill-card {
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 1.1rem 1.25rem;
-    }
-
-    .skill-card h3 {
-      font-size: 0.92rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 0.45rem;
-    }
-
-    .skill-card p {
-      font-size: 0.88rem;
-      color: var(--text-secondary);
-      line-height: 1.55;
-    }
-
-    /* ==========================================================================
-       Education Section
-       ========================================================================== */
-    .edu-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.35rem;
-    }
-
-    .edu-meta {
-      font-size: 0.88rem;
-      color: var(--text-secondary);
-      margin-top: 0.15rem;
-    }
-
-    .edu-coursework {
-      font-size: 0.86rem;
-      color: var(--text-muted);
-      margin-top: 0.25rem;
-    }
-
-    /* ==========================================================================
-       Languages & Additional Highlights Two-Column Layout
-       ========================================================================== */
-    .two-col-section {
-      display: grid;
-      grid-template-columns: 1fr 1.6fr;
-      gap: 2rem;
-    }
-
-    .lang-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      font-size: 0.92rem;
-      color: var(--text-secondary);
-    }
-
-    .lang-list strong {
-      color: var(--text-primary);
-      font-weight: 500;
-    }
-
-    .highlight-list {
-      margin-left: 1.15rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      font-size: 0.92rem;
-      color: var(--text-secondary);
-    }
-
-    .highlight-list strong {
-      color: var(--text-primary);
-      font-weight: 500;
-    }
-
-    /* ==========================================================================
-       Minimal Footer
-       ========================================================================== */
-    footer {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 1.5rem 1.5rem 3rem;
-      border-top: 1px solid var(--border-subtle);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      font-size: 0.84rem;
-      color: var(--text-muted);
-    }
-
-    /* ==========================================================================
-       Responsive Breakpoints
-       ========================================================================== */
-    @media (max-width: 680px) {
-      .hero-header {
-        flex-direction: column-reverse;
-        gap: 1rem;
-      }
-
-      .avatar-wrapper {
-        width: 72px;
-        height: 72px;
-      }
-
-      .skills-grid,
-      .two-col-section {
-        grid-template-columns: 1fr;
-      }
-
-      .contact-separator {
-        display: none;
-      }
-
-      .contact-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.35rem;
-      }
-    }
-
-    /* ==========================================================================
-       Clean Print-Friendly Styles (Save as PDF)
-       ========================================================================== */
-    @media print {
-      body {
-        background-color: #ffffff;
-        font-size: 10.5pt;
-        line-height: 1.45;
-      }
-
-      .navbar {
-        display: none;
-      }
-
-      .container {
-        max-width: 100%;
-        padding: 0;
-      }
-
-      section {
-        padding: 1rem 0;
-        break-inside: avoid;
-      }
-
-      .skill-card {
-        border: 1px solid #d1d5db;
-        padding: 0.75rem;
-      }
-
-      a {
-        color: #1f2937;
-        text-decoration: none;
-      }
-
-      footer {
-        padding: 1rem 0 0;
-      }
+      object-position: center 15%;
+      border-radius: 50%;
     }
   </style>
 </head>
-<body>
+<body class="antialiased selection:bg-tealAccent/25 selection:text-tealAccent">
 
-  <!-- Top Sticky Navigation -->
-  <nav class="navbar" aria-label="Primary Navigation">
-    <div class="nav-container">
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#highlights">Highlights</a></li>
-      </ul>
-      <!-- Upload Karthikeyan_Resume_pg.pdf to the same GitHub repository folder so this link works directly -->
-      <a href="Karthikeyan_Resume_pg.pdf" target="_blank" rel="noopener noreferrer" class="btn-cv">
-        Download CV (PDF)
-      </a>
-    </div>
-  </nav>
+  <!-- Full-Viewport Mechanical CAD & Gear Train Background Canvas -->
+  <canvas id="mechanical-canvas" aria-hidden="true"></canvas>
 
-  <!-- Main Content Container -->
-  <main class="container">
+  <!-- Main Content Layer -->
+  <div class="content-layer">
 
-    <!-- 1. Hero / About Section -->
-    <section id="about" class="hero">
-      <div class="hero-header">
-        <div class="hero-identity">
-          <h1>Karthikeyan Elango Chitra</h1>
-          <p class="hero-role">M.Sc. Electromobility | Battery Modelling, Simulation &amp; Digitalization</p>
-          <div class="contact-row">
-            <span class="contact-item">
-              <a href="tel:+4915236248211">+49 1523 6248211</a>
-            </span>
-            <span class="contact-separator" aria-hidden="true">|</span>
-            <span class="contact-item">
-              <a href="mailto:eckarthik97@gmail.com">eckarthik97@gmail.com</a>
-            </span>
-            <span class="contact-separator" aria-hidden="true">|</span>
-            <span class="contact-item">
-              <!-- Replace the href below with your exact LinkedIn profile URL -->
-              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            </span>
-            <span class="contact-separator" aria-hidden="true">|</span>
-            <span class="contact-item">
-              <!-- Replace the href below with your exact GitHub profile URL -->
-              <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
-            </span>
+    <!-- Sticky Top Navigation -->
+    <header class="sticky top-0 z-50 bg-charcoal-900/85 backdrop-blur-md border-b border-white/[0.07]">
+      <div class="max-w-6xl mx-auto px-5 sm:px-8 h-18 py-3.5 flex items-center justify-between gap-4">
+        <!-- Brand Monogram & Name -->
+        <a href="#overview" class="flex items-center gap-3 group">
+          <span class="w-9 h-9 rounded-full border border-amberAccent/80 bg-amberAccent/10 text-amberAccent font-mono text-xs font-semibold flex items-center justify-center group-hover:bg-amberAccent group-hover:text-charcoal-950 transition-colors">
+            KE
+          </span>
+          <span class="font-semibold text-sm sm:text-base tracking-tight text-slate-100">
+            Karthikeyan Elango Chitra
+          </span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav aria-label="Primary Navigation" class="hidden md:flex items-center gap-7 text-xs font-mono uppercase text-slate-400">
+          <a href="#overview" data-i18n="nav.overview" class="nav-link active hover:text-slate-100 transition-colors">Overview</a>
+          <a href="#focus-areas" data-i18n="nav.focus" class="nav-link hover:text-slate-100 transition-colors">Focus Areas</a>
+          <a href="#experience" data-i18n="nav.experience" class="nav-link hover:text-slate-100 transition-colors">Experience</a>
+          <a href="#education" data-i18n="nav.skills" class="nav-link hover:text-slate-100 transition-colors">Skills &amp; Education</a>
+          <a href="#contact" data-i18n="nav.contact" class="nav-link hover:text-slate-100 transition-colors">Contact</a>
+        </nav>
+
+        <!-- Language Switcher (EN | DE) & Primary CTA Pill -->
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <div
+            role="group"
+            aria-label="Language Switcher"
+            class="inline-flex items-center p-0.5 rounded-full bg-charcoal-800 border border-white/15 font-mono text-xs"
+          >
+            <button
+              type="button"
+              id="lang-btn-en"
+              onclick="setLanguage('en')"
+              aria-pressed="true"
+              class="px-2.5 py-1 rounded-full font-semibold transition-all bg-tealAccent text-charcoal-950"
+            >
+              EN
+            </button>
+            <button
+              type="button"
+              id="lang-btn-de"
+              onclick="setLanguage('de')"
+              aria-pressed="false"
+              class="px-2.5 py-1 rounded-full font-semibold transition-all text-slate-400 hover:text-slate-100"
+            >
+              DE
+            </button>
           </div>
-        </div>
 
-        <!--
-          Optional Profile Photo:
-          To display your photo, upload a square headshot named 'profile.jpg' to your GitHub folder
-          and uncomment the <img> tag below (removing the <span class="avatar-initials"> line).
-        -->
-        <div class="avatar-wrapper" aria-label="Profile Monogram">
-          <!-- <img src="profile.jpg" alt="Karthikeyan Elango Chitra"> -->
-          <span class="avatar-initials">KEC</span>
+          <a href="mailto:eckarthik97@gmail.com" data-i18n="cta.emailMe" class="px-4 py-2 rounded-full bg-amberAccent hover:bg-[#e3984c] text-charcoal-950 font-mono text-xs font-semibold tracking-wide transition-transform active:scale-95">
+            Email Me
+          </a>
         </div>
       </div>
+    </header>
 
-      <p class="hero-summary">
-        M.Sc. Electromobility student at FAU Erlangen with a mechanical and materials engineering background. Built machine learning models that cut battery aging prediction error by about 60%, automated and validated test workflows in Python, and applied Six Sigma in automotive production. Available from November 2026 for opportunities in modelling, simulation, and digitalization.
-      </p>
-    </section>
+    <!-- Hero Section (#overview) -->
+    <section id="overview" class="min-h-[calc(100vh-4.5rem)] flex items-center py-14 sm:py-20 px-5 sm:px-8 border-b border-white/[0.06]">
+      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
-    <!-- 2. Professional Experience Section -->
-    <section id="experience">
-      <h2 class="section-title">Professional Experience</h2>
-      <div class="entry-list">
-
-        <!-- Role 1 -->
-        <article class="entry-item">
-          <div class="entry-header">
-            <div>
-              <span class="entry-title">Thesis Student</span>
-              <span class="entry-org">&middot; Daimler Truck AG, Stuttgart</span>
+        <!-- Left Column: Circular Portrait with Teal-Amber Gradient Ring -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center">
+          <div class="portrait-ring w-60 h-60 sm:w-72 sm:h-72 relative">
+            <div class="w-full h-full rounded-full overflow-hidden bg-slate-100 border-4 border-charcoal-900 relative flex items-center justify-center">
+              <!-- Active Portrait Image: Displays profile-pic-2.png directly; falls back cleanly only if file is missing -->
+              <img
+                id="profile-photo"
+                src="profile-pic-2.png"
+                alt="Karthikeyan Elango Chitra"
+                class="w-full h-full portrait-img"
+                onerror="handlePhotoFallback(this)"
+              />
             </div>
-            <span class="entry-date">03/2026 &ndash; 08/2026</span>
           </div>
-          <ul class="entry-bullets">
-            <li>Developed a thermal-enhanced machine learning battery aging model for the eActros 600 truck, integrating estimated jelly-roll temperature into the aging-model pipeline and benchmarking 6 ML regression algorithms.</li>
-            <li>Achieved R&sup2; = 0.9987 with Random Forest and reduced State of Health (SoH) prediction RMSE by ~60% (from 3.04% to 1.21%) across operating conditions compared with the NTC-temperature baseline.</li>
-            <li>Delivered outcomes directly applicable to battery pack thermal management design and real-time predictive lifetime modelling.</li>
-          </ul>
-          <div class="skills-inline">
-            <span class="skill-pill">Machine Learning</span>
-            <span class="skill-pill">Databricks</span>
-            <span class="skill-pill">Microsoft Azure</span>
-            <span class="skill-pill">Git</span>
-            <span class="skill-pill">Data Handling</span>
-            <span class="skill-pill">Battery Aging</span>
-          </div>
-        </article>
 
-        <!-- Role 2 -->
-        <article class="entry-item">
-          <div class="entry-header">
-            <div>
-              <span class="entry-title">Working Student</span>
-              <span class="entry-org">&middot; Siemens AG (Digital Industries), Erlangen</span>
-            </div>
-            <span class="entry-date">05/2025 &ndash; 01/2026</span>
+          <!-- Availability Pill -->
+          <div class="mt-5 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-charcoal-800/90 border border-white/10 text-xs font-mono text-slate-300">
+            <span class="w-2 h-2 rounded-full bg-tealAccent animate-pulse"></span>
+            <span data-i18n="hero.availability">Available from December 2026</span>
           </div>
-          <ul class="entry-bullets">
-            <li>Designed and built a Python and PyQt6 automation tool to replace a manual calibration workflow, complete with technical documentation for long-term team adoption.</li>
-            <li>Reduced manual operator steps and calculation errors through structured process automation and system validation.</li>
-          </ul>
-          <div class="skills-inline">
-            <span class="skill-pill">Python</span>
-            <span class="skill-pill">PyQt6</span>
-            <span class="skill-pill">Technical Documentation</span>
-            <span class="skill-pill">Git</span>
-            <span class="skill-pill">System Validation</span>
-          </div>
-        </article>
-
-        <!-- Role 3 -->
-        <article class="entry-item">
-          <div class="entry-header">
-            <div>
-              <span class="entry-title">Research Lab Student</span>
-              <span class="entry-org">&middot; Team Battery Storage Systems, FAU Erlangen</span>
-            </div>
-            <span class="entry-date">03/2024 &ndash; 11/2024</span>
-          </div>
-          <ul class="entry-bullets">
-            <li>Conducted thermal management and material analysis within the Battery Storage Systems team, improving Li-ion battery thermal efficiency by ~22% and reducing material testing time by 30% through data automation.</li>
-          </ul>
-          <div class="skills-inline">
-            <span class="skill-pill">ANSYS Fluent</span>
-            <span class="skill-pill">SolidWorks</span>
-            <span class="skill-pill">Thermal Simulation</span>
-            <span class="skill-pill">Data Automation</span>
-            <span class="skill-pill">Materials Testing</span>
-            <span class="skill-pill">LaTeX</span>
-          </div>
-        </article>
-
-        <!-- Role 4 -->
-        <article class="entry-item">
-          <div class="entry-header">
-            <div>
-              <span class="entry-title">Product Manager</span>
-              <span class="entry-org">&middot; The Federal Bank Pvt Ltd</span>
-            </div>
-            <span class="entry-date">2021 &ndash; 2023</span>
-          </div>
-          <ul class="entry-bullets">
-            <li>Managed end-to-end delivery of 3+ simultaneous cross-functional product initiatives, coordinating across Engineering, Compliance, and external Fintech partners using Agile methodology.</li>
-            <li>Developed data-driven go-to-market strategies using predictive analytics, achieving 25% sales growth (4.2M) across retail products and a 30% improvement in lead conversion time.</li>
-            <li>Authored SOPs, project documentation, and regulatory compliance frameworks, ensuring structured handovers across 5+ stakeholder functions.</li>
-          </ul>
-          <div class="skills-inline">
-            <span class="skill-pill">Project Management</span>
-            <span class="skill-pill">Agile</span>
-            <span class="skill-pill">JIRA</span>
-            <span class="skill-pill">Stakeholder Coordination</span>
-            <span class="skill-pill">Predictive Analytics</span>
-          </div>
-        </article>
-
-        <!-- Role 5 -->
-        <article class="entry-item">
-          <div class="entry-header">
-            <div>
-              <span class="entry-title">Production Engineer (Intern)</span>
-              <span class="entry-org">&middot; Hyundai Motor India</span>
-            </div>
-            <span class="entry-date">2020 &ndash; 2021</span>
-          </div>
-          <ul class="entry-bullets">
-            <li>Applied Six Sigma methodology and real-time process monitoring, achieving an 18% reduction in defect rates and a 12% decrease in assembly downtime.</li>
-            <li>Performed structured failure analysis of engine and drivetrain systems, leading root-cause investigations and defining corrective actions.</li>
-          </ul>
-          <div class="skills-inline">
-            <span class="skill-pill">FMEA</span>
-            <span class="skill-pill">8D Problem Solving</span>
-            <span class="skill-pill">Process Auditing</span>
-            <span class="skill-pill">PPAP</span>
-            <span class="skill-pill">Root Cause Analysis</span>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- 3. Core Skills Section -->
-    <section id="skills">
-      <h2 class="section-title">Core Skills</h2>
-      <div class="skills-grid">
-        <div class="skill-card">
-          <h3>Python &amp; Data Science</h3>
-          <p>Python, Machine Learning (Regression, Random Forest), Databricks, Azure ML, Git, Workflow Automation, PyQt6</p>
         </div>
-        <div class="skill-card">
-          <h3>Process &amp; Quality Engineering</h3>
-          <p>FMEA, Six Sigma, 8D Problem Solving, Root Cause Analysis (RCA), PPAP, Process Auditing, Process Validation, SOP Development, Technical Documentation</p>
-        </div>
-        <div class="skill-card">
-          <h3>Data &amp; Reporting</h3>
-          <p>Power BI, SQL, Excel, KPI &amp; Stakeholder Reporting, Data Analysis, Statistical Analysis, Data Visualization, Predictive Analytics</p>
-        </div>
-        <div class="skill-card">
-          <h3>Project &amp; Collaboration</h3>
-          <p>Agile, JIRA, Cross-Functional Coordination, Stakeholder Communication, MS Office (Excel, PowerPoint, Word)</p>
+
+        <!-- Right Column: Headline, Multidisciplinary Bio & Actions -->
+        <div class="lg:col-span-7 text-center lg:text-left">
+          <!-- Domain Pill Badge -->
+          <div data-i18n="hero.badge" class="inline-flex items-center px-4 py-1.5 rounded-full bg-tealAccent/10 border border-tealAccent/35 text-tealAccent font-mono text-[11px] sm:text-xs tracking-[0.14em] uppercase mb-6">
+            MODELLING &amp; SIMULATION &bull; AUTOMATION &bull; DATA-DRIVEN R&amp;D
+          </div>
+
+          <!-- Hero Headline -->
+          <h1 data-i18n="hero.headline" class="text-3xl sm:text-5xl font-bold tracking-tight leading-[1.14] text-slate-100 mb-6">
+            From Physics &rarr; Data, Engineering
+            <span class="block text-tealAccent mt-1">intelligent &amp; scalable systems.</span>
+          </h1>
+
+          <!-- Concise Bio Paragraphs -->
+          <div class="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8">
+            <p data-i18n="hero.bio1">
+              M.Sc. Electromobility candidate at <strong class="text-slate-100 font-medium">FAU Erlangen</strong> with a strong foundation in Mechanical Engineering and Industrial Metallurgy (NIT Trichy). Experienced across physics-based CFD/thermal simulation (<span class="text-slate-100">ANSYS Fluent, SolidWorks</span>), predictive machine learning, and industrial quality systems.
+            </p>
+            <p data-i18n="hero.bio2">
+              Combined predictive ML modeling at <strong class="text-slate-100 font-medium">Daimler Truck AG</strong> (cutting prediction error by ~60%) and Python/PyQt6 test workflow automation at <strong class="text-slate-100 font-medium">Siemens AG</strong> with Six Sigma process engineering at <strong class="text-slate-100 font-medium">Hyundai Motor India</strong>.
+            </p>
+            <p data-i18n="hero.bio3" class="text-slate-200">
+              Seeking <span class="text-tealAccent font-medium">R&amp;D, Modelling &amp; Simulation, Automation, and Digitalization roles</span> bridging engineering physics, data science, and industrial execution. <span class="text-amberAccent font-medium">Available from December 2026.</span>
+            </p>
+          </div>
+
+          <!-- Primary Action Buttons -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3.5">
+            <a href="mailto:eckarthik97@gmail.com" class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-amberAccent hover:bg-[#e3984c] text-charcoal-950 font-semibold text-sm transition-all shadow-lg shadow-amberAccent/10">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <span data-i18n="cta.emailMe">Email Me</span>
+            </a>
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-700 border border-white/15 hover:border-tealAccent/50 text-slate-100 font-medium text-sm transition-all">
+              <svg class="w-4 h-4 text-tealAccent" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+              <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-700 border border-white/15 hover:border-tealAccent/50 text-slate-100 font-medium text-sm transition-all">
+              <svg class="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5c.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34c-.46-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.87 1.52 2.34 1.07 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.92c0-1.11.38-2 1.03-2.71c-.1-.25-.45-1.29.1-2.64c0 0 .84-.27 2.75 1.02c.79-.22 1.65-.33 2.5-.33c.85 0 1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.35.2 2.39.1 2.64c.65.71 1.03 1.6 1.03 2.71c0 3.82-2.34 4.66-4.57 4.91c.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"/></svg>
+              <span>GitHub</span>
+            </a>
+            <a href="Karthikeyan_Resume_pg.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-700 border border-white/15 hover:border-amberAccent/50 text-slate-100 font-medium text-sm transition-all">
+              <svg class="w-4 h-4 text-amberAccent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              <span data-i18n="cta.downloadCv">Download CV</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 4. Education Section -->
-    <section id="education">
-      <h2 class="section-title">Education</h2>
-      <div class="edu-list">
+    <!-- Focus Areas Section (#focus-areas) -->
+    <section id="focus-areas" class="py-20 px-5 sm:px-8 border-b border-white/[0.06]">
+      <div class="max-w-6xl mx-auto">
+        <p data-i18n="focus.eyebrow" class="font-mono text-xs uppercase tracking-[0.18em] text-tealAccent mb-2">Core Capabilities</p>
+        <h2 data-i18n="focus.title" class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100 mb-3">Focus Areas</h2>
+        <p data-i18n="focus.subtitle" class="text-slate-400 text-sm sm:text-base max-w-2xl mb-12">
+          Applying mechanical physics, simulation, machine learning, and software automation to solve complex engineering and operational challenges.
+        </p>
 
-        <article class="entry-item">
-          <div class="entry-header">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Card 1: Modelling & Simulation -->
+          <article class="glass-panel rounded-xl p-7 flex flex-col justify-between">
             <div>
-              <span class="entry-title">M.Sc. Electromobility</span>
-              <span class="entry-org">&middot; Friedrich-Alexander-Universit&auml;t Erlangen-N&uuml;rnberg (FAU), Germany</span>
+              <div class="w-10 h-10 rounded-lg bg-tealAccent/10 border border-tealAccent/30 text-tealAccent flex items-center justify-center mb-5">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </div>
+              <h3 data-i18n="focus.c1.title" class="text-lg font-semibold text-slate-100 mb-2.5">Modelling &amp; Physical Simulation</h3>
+              <p data-i18n="focus.c1.desc" class="text-slate-400 text-sm leading-relaxed mb-6">
+                Thermal management, CAD design, and multiphysics system modelling. Improved thermal efficiency by ~22% through coupled CFD simulation and experimental material characterization.
+              </p>
             </div>
-            <span class="entry-date">2023 &ndash; Present</span>
-          </div>
-          <p class="edu-meta">GPA: 2.4</p>
-          <p class="edu-coursework">Coursework: Battery Storage Systems, Energy Storage Systems, Aerodynamics &amp; Acoustics, Machine Learning</p>
-        </article>
+            <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-300">
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">ANSYS Fluent</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">SolidWorks</span>
+              <span data-i18n="tag.thermalSim" class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Thermal Simulation</span>
+              <span data-i18n="tag.matTest" class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Materials Testing</span>
+            </div>
+          </article>
 
-        <article class="entry-item">
-          <div class="entry-header">
+          <!-- Card 2: Machine Learning & Predictive Analytics -->
+          <article class="glass-panel rounded-xl p-7 flex flex-col justify-between">
             <div>
-              <span class="entry-title">Master of Technology: Industrial Metallurgy</span>
-              <span class="entry-org">&middot; National Institute of Technology Tiruchirappalli, India</span>
+              <div class="w-10 h-10 rounded-lg bg-amberAccent/10 border border-amberAccent/30 text-amberAccent flex items-center justify-center mb-5">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <h3 data-i18n="focus.c2.title" class="text-lg font-semibold text-slate-100 mb-2.5">Machine Learning &amp; Predictive Analytics</h3>
+              <p data-i18n="focus.c2.desc" class="text-slate-400 text-sm leading-relaxed mb-6">
+                Physics-informed ML pipelines and statistical modelling. Benchmarked 6 regression algorithms achieving R&sup2; = 0.9987 and ~60% RMSE reduction for real-time degradation prediction.
+              </p>
             </div>
-            <span class="entry-date">2019 &ndash; 2021</span>
-          </div>
-          <p class="edu-meta">GPA: 1.4</p>
-          <p class="edu-coursework">Coursework: Testing and Characterization, Spectroscopy, Battery Technologies, Non-Destructive Testing</p>
-        </article>
+            <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-300">
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Python</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Random Forest</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Databricks</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Azure ML</span>
+              <span data-i18n="tag.predAnalytics" class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Predictive Analytics</span>
+            </div>
+          </article>
 
-        <article class="entry-item">
-          <div class="entry-header">
+          <!-- Card 3: Workflow Automation & Digitalization -->
+          <article class="glass-panel rounded-xl p-7 flex flex-col justify-between">
             <div>
-              <span class="entry-title">Bachelor of Technology: Mechanical Engineering</span>
-              <span class="entry-org">&middot; Anna University, Chennai, India</span>
+              <div class="w-10 h-10 rounded-lg bg-amberAccent/10 border border-amberAccent/30 text-amberAccent flex items-center justify-center mb-5">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <h3 data-i18n="focus.c3.title" class="text-lg font-semibold text-slate-100 mb-2.5">Workflow Automation &amp; Digitalization</h3>
+              <p data-i18n="focus.c3.desc" class="text-slate-400 text-sm leading-relaxed mb-6">
+                Designing validated Python desktop software, automated testing routines, and KPI reporting pipelines that eliminate manual calibration errors and cut testing duration by 30%.
+              </p>
             </div>
-            <span class="entry-date">2014 &ndash; 2018</span>
-          </div>
-          <p class="edu-meta">GPA: 1.6</p>
-        </article>
+            <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-300">
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">PyQt6</span>
+              <span data-i18n="tag.workflowAuto" class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Workflow Automation</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">SQL &amp; Power BI</span>
+              <span data-i18n="tag.sysVal" class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">System Validation</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Git</span>
+            </div>
+          </article>
 
+          <!-- Card 4: Process & Quality Engineering -->
+          <article class="glass-panel rounded-xl p-7 flex flex-col justify-between">
+            <div>
+              <div class="w-10 h-10 rounded-lg bg-tealAccent/10 border border-tealAccent/30 text-tealAccent flex items-center justify-center mb-5">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <h3 data-i18n="focus.c4.title" class="text-lg font-semibold text-slate-100 mb-2.5">Process &amp; Quality Engineering</h3>
+              <p data-i18n="focus.c4.desc" class="text-slate-400 text-sm leading-relaxed mb-6">
+                Six Sigma process optimization, root-cause failure analysis, and Agile cross-functional delivery—reducing manufacturing defect rates by 18% and assembly downtime by 12%.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-300">
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Six Sigma</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">FMEA &amp; 8D</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">RCA &amp; PPAP</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">Agile &amp; JIRA</span>
+              <span data-i18n="tag.sopDev" class="px-2.5 py-1 rounded bg-charcoal-900/90 border border-white/10">SOP Development</span>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <!-- 5. Languages & Additional Highlights -->
-    <section id="highlights">
-      <div class="two-col-section">
-        <div>
-          <h2 class="section-title">Languages</h2>
-          <ul class="lang-list">
-            <li><strong>English:</strong> Fluent (C1)</li>
-            <li><strong>German:</strong> B1 (actively developing towards B2)</li>
-            <li><strong>Hindi:</strong> Fluent</li>
-            <li><strong>Tamil:</strong> Native</li>
-          </ul>
-        </div>
-        <div>
-          <h2 class="section-title">Additional Highlights</h2>
-          <ul class="highlight-list">
-            <li><strong>Gold Medalist:</strong> Awarded for academic excellence in M.Tech at NIT Tiruchirappalli.</li>
-            <li><strong>Leadership:</strong> Organized mentorship programs as President of the Pupil for Pupil Committee, impacting over 1,000 underprivileged students.</li>
-            <li><strong>Sustainability Advocacy:</strong> Delivered a keynote address on plastic waste reduction under the NSS Initiative.</li>
-          </ul>
+    <!-- Experience Section (#experience) -->
+    <section id="experience" class="py-20 px-5 sm:px-8 border-b border-white/[0.06]">
+      <div class="max-w-6xl mx-auto">
+        <p data-i18n="exp.eyebrow" class="font-mono text-xs uppercase tracking-[0.18em] text-tealAccent mb-2">Career Track</p>
+        <h2 data-i18n="exp.title" class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100 mb-3">Professional Experience</h2>
+        <p data-i18n="exp.subtitle" class="text-slate-400 text-sm sm:text-base max-w-2xl mb-12">
+          R&amp;D modelling, industrial software automation, and manufacturing engineering across Germany and India.
+        </p>
+
+        <div class="space-y-6">
+          <!-- Experience 1: Daimler Truck AG -->
+          <article class="glass-panel rounded-xl p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-4">
+              <div>
+                <h3 data-i18n="exp.e1.role" class="text-lg sm:text-xl font-semibold text-slate-100">Thesis Student &mdash; Predictive Modelling &amp; Simulation</h3>
+                <p data-i18n="exp.e1.org" class="text-tealAccent font-medium text-sm sm:text-base">Daimler Truck AG &bull; Stuttgart, Germany</p>
+              </div>
+              <span class="self-start px-3 py-1 rounded-full bg-amberAccent/10 border border-amberAccent/30 text-amberAccent font-mono text-xs">
+                03/2026 &ndash; 08/2026
+              </span>
+            </div>
+            <ul class="space-y-2.5 text-slate-300 text-sm leading-relaxed mb-5">
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e1.b1">Developed a thermal-enhanced ML aging model for the <strong class="text-slate-100">eActros 600</strong> electric truck, integrating estimated internal cell temperature into the modelling pipeline and benchmarking 6 ML regression algorithms.</span></li>
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e1.b2">Achieved <strong class="text-slate-100">R&sup2; = 0.9987</strong> with Random Forest and reduced prediction RMSE by <strong class="text-slate-100">~60% (3.04% &rarr; 1.21%)</strong> across operating conditions compared with the sensor baseline.</span></li>
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e1.b3">Delivered validated models directly applicable to thermal management design and real-time predictive lifetime estimation.</span></li>
+            </ul>
+            <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-400">
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Machine Learning</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Databricks</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Microsoft Azure</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Git</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Data Handling</span>
+            </div>
+          </article>
+
+          <!-- Experience 2: Siemens AG -->
+          <article class="glass-panel rounded-xl p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-4">
+              <div>
+                <h3 data-i18n="exp.e2.role" class="text-lg sm:text-xl font-semibold text-slate-100">Working Student &mdash; Digital Industries</h3>
+                <p data-i18n="exp.e2.org" class="text-tealAccent font-medium text-sm sm:text-base">Siemens AG &bull; Erlangen, Germany</p>
+              </div>
+              <span class="self-start px-3 py-1 rounded-full bg-amberAccent/10 border border-amberAccent/30 text-amberAccent font-mono text-xs">
+                05/2025 &ndash; 01/2026
+              </span>
+            </div>
+            <ul class="space-y-2.5 text-slate-300 text-sm leading-relaxed mb-5">
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e2.b1">Designed and built a <strong class="text-slate-100">Python / PyQt6</strong> automation tool to replace a manual calibration workflow, authoring comprehensive technical documentation for long-term team adoption.</span></li>
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e2.b2">Reduced manual operator steps and eliminated calculation errors through structured process automation and system validation.</span></li>
+            </ul>
+            <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-400">
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Python</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">PyQt6</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">System Validation</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Technical Documentation</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Git</span>
+            </div>
+          </article>
+
+          <!-- Experience 3: FAU Erlangen Research Lab -->
+          <article class="glass-panel rounded-xl p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-4">
+              <div>
+                <h3 data-i18n="exp.e3.role" class="text-lg sm:text-xl font-semibold text-slate-100">Research Lab Student &mdash; Thermal &amp; Materials Engineering</h3>
+                <p data-i18n="exp.e3.org" class="text-tealAccent font-medium text-sm sm:text-base">Friedrich-Alexander-Universit&auml;t Erlangen-N&uuml;rnberg (FAU) &bull; Erlangen, Germany</p>
+              </div>
+              <span class="self-start px-3 py-1 rounded-full bg-amberAccent/10 border border-amberAccent/30 text-amberAccent font-mono text-xs">
+                03/2024 &ndash; 11/2024
+              </span>
+            </div>
+            <ul class="space-y-2.5 text-slate-300 text-sm leading-relaxed mb-5">
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e3.b1">Executed thermal management simulations and material characterization in the Energy Storage Systems research group, improving thermal efficiency by <strong class="text-slate-100">~22%</strong> and cutting material testing time by <strong class="text-slate-100">30%</strong> through data automation.</span></li>
+            </ul>
+            <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-400">
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">ANSYS Fluent</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">SolidWorks</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Thermal Simulation</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Data Automation</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Materials Testing</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">LaTeX</span>
+            </div>
+          </article>
+
+          <!-- Experience 4: The Federal Bank Pvt Ltd -->
+          <article class="glass-panel rounded-xl p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-4">
+              <div>
+                <h3 data-i18n="exp.e4.role" class="text-lg sm:text-xl font-semibold text-slate-100">Product Manager</h3>
+                <p data-i18n="exp.e4.org" class="text-tealAccent font-medium text-sm sm:text-base">The Federal Bank Pvt Ltd &bull; India</p>
+              </div>
+              <span class="self-start px-3 py-1 rounded-full bg-amberAccent/10 border border-amberAccent/30 text-amberAccent font-mono text-xs">
+                2021 &ndash; 2023
+              </span>
+            </div>
+            <ul class="space-y-2.5 text-slate-300 text-sm leading-relaxed mb-5">
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e4.b1">Managed end-to-end delivery of 3+ simultaneous cross-functional product projects, coordinating Engineering, Compliance, and external Fintech teams under Agile methodology.</span></li>
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e4.b2">Built data-driven go-to-market strategies using predictive analytics, driving <strong class="text-slate-100">25% sales growth (4.2M)</strong> and a <strong class="text-slate-100">30% improvement</strong> in lead conversion time.</span></li>
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e4.b3">Authored SOPs, project documentation, and regulatory compliance frameworks across 5+ stakeholder functions.</span></li>
+            </ul>
+            <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-400">
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Agile &amp; JIRA</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Predictive Analytics</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Stakeholder Coordination</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">KPI Reporting</span>
+            </div>
+          </article>
+
+          <!-- Experience 5: Hyundai Motor India -->
+          <article class="glass-panel rounded-xl p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-4">
+              <div>
+                <h3 data-i18n="exp.e5.role" class="text-lg sm:text-xl font-semibold text-slate-100">Production Engineer (Intern)</h3>
+                <p data-i18n="exp.e5.org" class="text-tealAccent font-medium text-sm sm:text-base">Hyundai Motor India &bull; Chennai, India</p>
+              </div>
+              <span class="self-start px-3 py-1 rounded-full bg-amberAccent/10 border border-amberAccent/30 text-amberAccent font-mono text-xs">
+                2020 &ndash; 2021
+              </span>
+            </div>
+            <ul class="space-y-2.5 text-slate-300 text-sm leading-relaxed mb-5">
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e5.b1">Applied Six Sigma methodology and real-time process monitoring, achieving an <strong class="text-slate-100">18% reduction</strong> in defect rates and a <strong class="text-slate-100">12% decrease</strong> in assembly downtime.</span></li>
+              <li class="flex gap-2.5"><span class="text-tealAccent font-mono">&rarr;</span><span data-i18n="exp.e5.b2">Led structured failure analysis of engine and drivetrain systems; executed root-cause investigations and corrective action plans.</span></li>
+            </ul>
+            <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-400">
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Six Sigma</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">FMEA</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">8D Problem Solving</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">Process Auditing</span>
+              <span class="px-2.5 py-1 rounded bg-charcoal-900 border border-white/10">PPAP &amp; RCA</span>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-  </main>
+    <!-- Skills, Education & Highlights Section (#education) -->
+    <section id="education" class="py-20 px-5 sm:px-8 border-b border-white/[0.06]">
+      <div class="max-w-6xl mx-auto">
+        <p data-i18n="edu.eyebrow" class="font-mono text-xs uppercase tracking-[0.18em] text-tealAccent mb-2">Qualifications</p>
+        <h2 data-i18n="edu.title" class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100 mb-3">Technical Stack &amp; Education</h2>
+        <p data-i18n="edu.subtitle" class="text-slate-400 text-sm sm:text-base max-w-2xl mb-12">
+          Academic degrees in engineering and materials science paired with cross-disciplinary technical tools.
+        </p>
 
-  <!-- Minimal Footer -->
-  <footer>
-    <span>&copy; 2026 Karthikeyan Elango Chitra</span>
-    <a href="mailto:eckarthik97@gmail.com">eckarthik97@gmail.com</a>
-  </footer>
+        <!-- Core Technical Skills Matrix -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-14">
+          <div class="glass-panel rounded-xl p-5">
+            <h3 data-i18n="skills.s1.title" class="font-mono text-xs uppercase tracking-wider text-tealAccent mb-3">Python &amp; Data Science</h3>
+            <p data-i18n="skills.s1.items" class="text-slate-300 text-sm leading-relaxed">
+              Python, Machine Learning (Regression, Random Forest), Databricks, Azure ML, Git, Workflow Automation, PyQt6
+            </p>
+          </div>
+          <div class="glass-panel rounded-xl p-5">
+            <h3 data-i18n="skills.s2.title" class="font-mono text-xs uppercase tracking-wider text-amberAccent mb-3">Simulation &amp; Engineering</h3>
+            <p data-i18n="skills.s2.items" class="text-slate-300 text-sm leading-relaxed">
+              ANSYS Fluent, SolidWorks, Thermal &amp; Multiphysics Modelling, Materials Characterization, LaTeX
+            </p>
+          </div>
+          <div class="glass-panel rounded-xl p-5">
+            <h3 data-i18n="skills.s3.title" class="font-mono text-xs uppercase tracking-wider text-tealAccent mb-3">Process &amp; Quality</h3>
+            <p data-i18n="skills.s3.items" class="text-slate-300 text-sm leading-relaxed">
+              FMEA, Six Sigma, 8D Problem Solving, Root Cause Analysis (RCA), PPAP, Process Auditing &amp; Validation, SOPs
+            </p>
+          </div>
+          <div class="glass-panel rounded-xl p-5">
+            <h3 data-i18n="skills.s4.title" class="font-mono text-xs uppercase tracking-wider text-amberAccent mb-3">Data, BI &amp; Delivery</h3>
+            <p data-i18n="skills.s4.items" class="text-slate-300 text-sm leading-relaxed">
+              Power BI, SQL, Excel, KPI &amp; Stakeholder Reporting, Statistical Analysis, Agile, JIRA, MS Office
+            </p>
+          </div>
+        </div>
 
+        <!-- Two-Column Education & Recognition -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Left: Degrees -->
+          <div class="lg:col-span-7 space-y-5">
+            <div class="glass-panel rounded-xl p-6">
+              <div class="flex flex-wrap justify-between items-start gap-2 mb-1">
+                <h3 data-i18n="edu.d1.title" class="text-base sm:text-lg font-semibold text-slate-100">M.Sc. Electromobility</h3>
+                <span data-i18n="edu.d1.date" class="font-mono text-xs text-slate-400">2023 &ndash; Present</span>
+              </div>
+              <p class="text-tealAccent text-sm font-medium mb-3">Friedrich-Alexander-Universit&auml;t Erlangen-N&uuml;rnberg (FAU), Germany</p>
+              <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span data-i18n="edu.d1.gpa" class="px-2.5 py-0.5 rounded bg-charcoal-900 border border-white/15 font-mono text-xs text-slate-200">GPA: 2.4</span>
+              </div>
+              <p data-i18n="edu.d1.courses" class="text-slate-400 text-xs sm:text-sm">
+                Coursework: Energy Storage Systems, Battery Storage Systems, Aerodynamics &amp; Acoustics, Machine Learning
+              </p>
+            </div>
+
+            <div class="glass-panel rounded-xl p-6">
+              <div class="flex flex-wrap justify-between items-start gap-2 mb-1">
+                <h3 data-i18n="edu.d2.title" class="text-base sm:text-lg font-semibold text-slate-100">M.Tech. Industrial Metallurgy</h3>
+                <span class="font-mono text-xs text-slate-400">2019 &ndash; 2021</span>
+              </div>
+              <p data-i18n="edu.d2.org" class="text-tealAccent text-sm font-medium mb-3">National Institute of Technology Tiruchirappalli (NIT Trichy), India</p>
+              <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span data-i18n="edu.d2.gpa" class="px-2.5 py-0.5 rounded bg-charcoal-900 border border-white/15 font-mono text-xs text-slate-200">GPA: 1.4</span>
+                <span data-i18n="edu.d2.medal" class="px-2.5 py-0.5 rounded bg-amberAccent/15 border border-amberAccent/40 font-mono text-xs font-semibold text-amberAccent">Gold Medalist</span>
+              </div>
+              <p data-i18n="edu.d2.courses" class="text-slate-400 text-xs sm:text-sm">
+                Coursework: Testing &amp; Characterization, Spectroscopy, Energy &amp; Battery Technologies, Non-Destructive Testing
+              </p>
+            </div>
+
+            <div class="glass-panel rounded-xl p-6">
+              <div class="flex flex-wrap justify-between items-start gap-2 mb-1">
+                <h3 data-i18n="edu.d3.title" class="text-base sm:text-lg font-semibold text-slate-100">B.Tech. Mechanical Engineering</h3>
+                <span class="font-mono text-xs text-slate-400">2014 &ndash; 2018</span>
+              </div>
+              <p data-i18n="edu.d3.org" class="text-tealAccent text-sm font-medium mb-3">Anna University, Chennai, India</p>
+              <div class="flex flex-wrap items-center gap-2">
+                <span data-i18n="edu.d3.gpa" class="px-2.5 py-0.5 rounded bg-charcoal-900 border border-white/15 font-mono text-xs text-slate-200">GPA: 1.6</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Languages & Additional Highlights -->
+          <div class="lg:col-span-5 space-y-5">
+            <div class="glass-panel rounded-xl p-6">
+              <h3 data-i18n="lang.title" class="font-mono text-xs uppercase tracking-[0.15em] text-amberAccent mb-4">Languages</h3>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="p-3 rounded-lg bg-charcoal-900/90 border border-white/10">
+                  <div data-i18n="lang.en" class="text-sm font-semibold text-slate-100">English</div>
+                  <div data-i18n="lang.enLevel" class="text-xs text-slate-400 mt-0.5">Fluent (C1)</div>
+                </div>
+                <div class="p-3 rounded-lg bg-charcoal-900/90 border border-white/10">
+                  <div data-i18n="lang.de" class="text-sm font-semibold text-slate-100">German</div>
+                  <div data-i18n="lang.deLevel" class="text-xs text-slate-400 mt-0.5">B1 (advancing to B2)</div>
+                </div>
+                <div class="p-3 rounded-lg bg-charcoal-900/90 border border-white/10">
+                  <div data-i18n="lang.ta" class="text-sm font-semibold text-slate-100">Tamil</div>
+                  <div data-i18n="lang.taLevel" class="text-xs text-slate-400 mt-0.5">Native</div>
+                </div>
+                <div class="p-3 rounded-lg bg-charcoal-900/90 border border-white/10">
+                  <div data-i18n="lang.hi" class="text-sm font-semibold text-slate-100">Hindi</div>
+                  <div data-i18n="lang.hiLevel" class="text-xs text-slate-400 mt-0.5">Fluent</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-panel rounded-xl p-6">
+              <h3 data-i18n="honors.title" class="font-mono text-xs uppercase tracking-[0.15em] text-amberAccent mb-4">Honors &amp; Leadership</h3>
+              <ul class="space-y-3.5 text-sm text-slate-300 leading-relaxed">
+                <li class="flex gap-2.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-tealAccent mt-2 shrink-0"></span>
+                  <span data-i18n="honors.h1"><strong class="text-slate-100">Gold Medalist:</strong> Awarded for academic excellence in M.Tech. Industrial Metallurgy at NIT Trichy.</span>
+                </li>
+                <li class="flex gap-2.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-tealAccent mt-2 shrink-0"></span>
+                  <span data-i18n="honors.h2"><strong class="text-slate-100">Leadership:</strong> Organized mentorship programs as President of the <em>Pupil for Pupil Committee</em>, impacting 1,000+ underprivileged students.</span>
+                </li>
+                <li class="flex gap-2.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-tealAccent mt-2 shrink-0"></span>
+                  <span data-i18n="honors.h3"><strong class="text-slate-100">Sustainability Advocacy:</strong> Delivered keynote on plastic waste reduction under the NSS Initiative.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section (#contact) -->
+    <footer id="contact" class="py-16 px-5 sm:px-8 bg-charcoal-950/75">
+      <div class="max-w-3xl mx-auto text-center">
+        <p data-i18n="contact.eyebrow" class="font-mono text-xs uppercase tracking-[0.18em] text-tealAccent mb-2">Contact</p>
+        <h2 data-i18n="contact.title" class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100 mb-3">
+          Available from December 2026
+        </h2>
+        <p data-i18n="contact.subtitle" class="text-slate-400 text-sm sm:text-base mb-8">
+          Open to R&amp;D, Modelling &amp; Simulation, Automation, and Digitalization roles across engineering and technology sectors.
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-3.5 mb-12">
+          <a href="mailto:eckarthik97@gmail.com" class="px-5 py-3 rounded-lg bg-amberAccent hover:bg-[#e3984c] text-charcoal-950 font-semibold text-sm transition-colors">
+            eckarthik97@gmail.com
+          </a>
+          <a href="tel:+4915236248211" class="px-5 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-700 border border-white/15 text-slate-100 font-medium text-sm transition-colors">
+            +49-15236248211
+          </a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-700 border border-white/15 text-slate-100 font-medium text-sm transition-colors">
+            LinkedIn
+          </a>
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-700 border border-white/15 text-slate-100 font-medium text-sm transition-colors">
+            GitHub
+          </a>
+          <a href="Karthikeyan_Resume_pg.pdf" target="_blank" rel="noopener noreferrer" data-i18n="cta.downloadCvPdf" class="px-5 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-700 border border-white/15 text-slate-100 font-medium text-sm transition-colors">
+            Download CV (PDF)
+          </a>
+        </div>
+
+        <div class="pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row justify-between items-center gap-2 font-mono text-xs text-slate-500">
+          <span>&copy; 2026 Karthikeyan Elango Chitra</span>
+          <span data-i18n="footer.location">Erlangen / Stuttgart, Germany</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Interactive Scripts: Bilingual Engine (EN/DE), Photo Fallback & Scroll-Reactive Mechanical CAD Schematic -->
+  <script>
+    /**
+     * Bilingual Translation Dictionary (English & German)
+     */
+    const TRANSLATIONS = {
+      en: {
+        pageTitle: 'Karthikeyan Elango Chitra | Modelling, Simulation, Automation & R&D',
+        'nav.overview': 'Overview',
+        'nav.focus': 'Focus Areas',
+        'nav.experience': 'Experience',
+        'nav.skills': 'Skills & Education',
+        'nav.contact': 'Contact',
+        'cta.emailMe': 'Email Me',
+        'cta.downloadCv': 'Download CV',
+        'cta.downloadCvPdf': 'Download CV (PDF)',
+        'hero.availability': 'Available from December 2026',
+        'hero.badge': 'MODELLING & SIMULATION &bull; AUTOMATION &bull; DATA-DRIVEN R&amp;D',
+        'hero.headline': 'From Physics &rarr; Data, Engineering <span class="block text-tealAccent mt-1">intelligent &amp; scalable systems.</span>',
+        'hero.bio1': 'M.Sc. Electromobility candidate at <strong class="text-slate-100 font-medium">FAU Erlangen</strong> with a strong foundation in Mechanical Engineering and Industrial Metallurgy (NIT Trichy). Experienced across physics-based CFD/thermal simulation (<span class="text-slate-100">ANSYS Fluent, SolidWorks</span>), predictive machine learning, and industrial quality systems.',
+        'hero.bio2': 'Combined predictive ML modeling at <strong class="text-slate-100 font-medium">Daimler Truck AG</strong> (cutting prediction error by ~60%) and Python/PyQt6 test workflow automation at <strong class="text-slate-100 font-medium">Siemens AG</strong> with Six Sigma process engineering at <strong class="text-slate-100 font-medium">Hyundai Motor India</strong>.',
+        'hero.bio3': 'Seeking <span class="text-tealAccent font-medium">R&amp;D, Modelling &amp; Simulation, Automation, and Digitalization roles</span> bridging engineering physics, data science, and industrial execution. <span class="text-amberAccent font-medium">Available from December 2026.</span>',
+        'focus.eyebrow': 'Core Capabilities',
+        'focus.title': 'Focus Areas',
+        'focus.subtitle': 'Applying mechanical physics, simulation, machine learning, and software automation to solve complex engineering and operational challenges.',
+        'focus.c1.title': 'Modelling &amp; Physical Simulation',
+        'focus.c1.desc': 'Thermal management, CAD design, and multiphysics system modelling. Improved thermal efficiency by ~22% through coupled CFD simulation and experimental material characterization.',
+        'focus.c2.title': 'Machine Learning &amp; Predictive Analytics',
+        'focus.c2.desc': 'Physics-informed ML pipelines and statistical modelling. Benchmarked 6 regression algorithms achieving R&sup2; = 0.9987 and ~60% RMSE reduction for real-time degradation prediction.',
+        'focus.c3.title': 'Workflow Automation &amp; Digitalization',
+        'focus.c3.desc': 'Designing validated Python desktop software, automated testing routines, and KPI reporting pipelines that eliminate manual calibration errors and cut testing duration by 30%.',
+        'focus.c4.title': 'Process &amp; Quality Engineering',
+        'focus.c4.desc': 'Six Sigma process optimization, root-cause failure analysis, and Agile cross-functional delivery&mdash;reducing manufacturing defect rates by 18% and assembly downtime by 12%.',
+        'tag.thermalSim': 'Thermal Simulation',
+        'tag.matTest': 'Materials Testing',
+        'tag.predAnalytics': 'Predictive Analytics',
+        'tag.workflowAuto': 'Workflow Automation',
+        'tag.sysVal': 'System Validation',
+        'tag.sopDev': 'SOP Development',
+        'exp.eyebrow': 'Career Track',
+        'exp.title': 'Professional Experience',
+        'exp.subtitle': 'R&amp;D modelling, industrial software automation, and manufacturing engineering across Germany and India.',
+        'exp.e1.role': 'Thesis Student &mdash; Predictive Modelling &amp; Simulation',
+        'exp.e1.org': 'Daimler Truck AG &bull; Stuttgart, Germany',
+        'exp.e1.b1': 'Developed a thermal-enhanced ML aging model for the <strong class="text-slate-100">eActros 600</strong> electric truck, integrating estimated internal cell temperature into the modelling pipeline and benchmarking 6 ML regression algorithms.',
+        'exp.e1.b2': 'Achieved <strong class="text-slate-100">R&sup2; = 0.9987</strong> with Random Forest and reduced prediction RMSE by <strong class="text-slate-100">~60% (3.04% &rarr; 1.21%)</strong> across operating conditions compared with the sensor baseline.',
+        'exp.e1.b3': 'Delivered validated models directly applicable to thermal management design and real-time predictive lifetime estimation.',
+        'exp.e2.role': 'Working Student &mdash; Digital Industries',
+        'exp.e2.org': 'Siemens AG &bull; Erlangen, Germany',
+        'exp.e2.b1': 'Designed and built a <strong class="text-slate-100">Python / PyQt6</strong> automation tool to replace a manual calibration workflow, authoring comprehensive technical documentation for long-term team adoption.',
+        'exp.e2.b2': 'Reduced manual operator steps and eliminated calculation errors through structured process automation and system validation.',
+        'exp.e3.role': 'Research Lab Student &mdash; Thermal &amp; Materials Engineering',
+        'exp.e3.org': 'Friedrich-Alexander-Universit&auml;t Erlangen-N&uuml;rnberg (FAU) &bull; Erlangen, Germany',
+        'exp.e3.b1': 'Executed thermal management simulations and material characterization in the Energy Storage Systems research group, improving thermal efficiency by <strong class="text-slate-100">~22%</strong> and cutting material testing time by <strong class="text-slate-100">30%</strong> through data automation.',
+        'exp.e4.role': 'Product Manager',
+        'exp.e4.org': 'The Federal Bank Pvt Ltd &bull; India',
+        'exp.e4.b1': 'Managed end-to-end delivery of 3+ simultaneous cross-functional product projects, coordinating Engineering, Compliance, and external Fintech teams under Agile methodology.',
+        'exp.e4.b2': 'Built data-driven go-to-market strategies using predictive analytics, driving <strong class="text-slate-100">25% sales growth (4.2M)</strong> and a <strong class="text-slate-100">30% improvement</strong> in lead conversion time.',
+        'exp.e4.b3': 'Authored SOPs, project documentation, and regulatory compliance frameworks across 5+ stakeholder functions.',
+        'exp.e5.role': 'Production Engineer (Intern)',
+        'exp.e5.org': 'Hyundai Motor India &bull; Chennai, India',
+        'exp.e5.b1': 'Applied Six Sigma methodology and real-time process monitoring, achieving an <strong class="text-slate-100">18% reduction</strong> in defect rates and a <strong class="text-slate-100">12% decrease</strong> in assembly downtime.',
+        'exp.e5.b2': 'Led structured failure analysis of engine and drivetrain systems; executed root-cause investigations and corrective action plans.',
+        'edu.eyebrow': 'Qualifications',
+        'edu.title': 'Technical Stack &amp; Education',
+        'edu.subtitle': 'Academic degrees in engineering and materials science paired with cross-disciplinary technical tools.',
+        'skills.s1.title': 'Python &amp; Data Science',
+        'skills.s1.items': 'Python, Machine Learning (Regression, Random Forest), Databricks, Azure ML, Git, Workflow Automation, PyQt6',
+        'skills.s2.title': 'Simulation &amp; Engineering',
+        'skills.s2.items': 'ANSYS Fluent, SolidWorks, Thermal &amp; Multiphysics Modelling, Materials Characterization, LaTeX',
+        'skills.s3.title': 'Process &amp; Quality',
+        'skills.s3.items': 'FMEA, Six Sigma, 8D Problem Solving, Root Cause Analysis (RCA), PPAP, Process Auditing &amp; Validation, SOPs',
+        'skills.s4.title': 'Data, BI &amp; Delivery',
+        'skills.s4.items': 'Power BI, SQL, Excel, KPI &amp; Stakeholder Reporting, Statistical Analysis, Agile, JIRA, MS Office',
+        'edu.d1.title': 'M.Sc. Electromobility',
+        'edu.d1.date': '2023 &ndash; Present',
+        'edu.d1.gpa': 'GPA: 2.4',
+        'edu.d1.courses': 'Coursework: Energy Storage Systems, Battery Storage Systems, Aerodynamics &amp; Acoustics, Machine Learning',
+        'edu.d2.title': 'M.Tech. Industrial Metallurgy',
+        'edu.d2.org': 'National Institute of Technology Tiruchirappalli (NIT Trichy), India',
+        'edu.d2.gpa': 'GPA: 1.4',
+        'edu.d2.medal': 'Gold Medalist',
+        'edu.d2.courses': 'Coursework: Testing &amp; Characterization, Spectroscopy, Energy &amp; Battery Technologies, Non-Destructive Testing',
+        'edu.d3.title': 'B.Tech. Mechanical Engineering',
+        'edu.d3.org': 'Anna University, Chennai, India',
+        'edu.d3.gpa': 'GPA: 1.6',
+        'lang.title': 'Languages',
+        'lang.en': 'English',
+        'lang.enLevel': 'Fluent (C1)',
+        'lang.de': 'German',
+        'lang.deLevel': 'B1 (advancing to B2)',
+        'lang.ta': 'Tamil',
+        'lang.taLevel': 'Native',
+        'lang.hi': 'Hindi',
+        'lang.hiLevel': 'Fluent',
+        'honors.title': 'Honors &amp; Leadership',
+        'honors.h1': '<strong class="text-slate-100">Gold Medalist:</strong> Awarded for academic excellence in M.Tech. Industrial Metallurgy at NIT Trichy.',
+        'honors.h2': '<strong class="text-slate-100">Leadership:</strong> Organized mentorship programs as President of the <em>Pupil for Pupil Committee</em>, impacting 1,000+ underprivileged students.',
+        'honors.h3': '<strong class="text-slate-100">Sustainability Advocacy:</strong> Delivered keynote on plastic waste reduction under the NSS Initiative.',
+        'contact.eyebrow': 'Contact',
+        'contact.title': 'Available from December 2026',
+        'contact.subtitle': 'Open to R&amp;D, Modelling &amp; Simulation, Automation, and Digitalization roles across engineering and technology sectors.',
+        'footer.location': 'Erlangen / Stuttgart, Germany',
+      },
+      de: {
+        pageTitle: 'Karthikeyan Elango Chitra | Modellierung, Simulation, Automatisierung & F&E',
+        'nav.overview': '&Uuml;berblick',
+        'nav.focus': 'Schwerpunkte',
+        'nav.experience': 'Erfahrung',
+        'nav.skills': 'Kompetenzen &amp; Studium',
+        'nav.contact': 'Kontakt',
+        'cta.emailMe': 'E-Mail senden',
+        'cta.downloadCv': 'Lebenslauf (PDF)',
+        'cta.downloadCvPdf': 'Lebenslauf herunterladen (PDF)',
+        'hero.availability': 'Verf&uuml;gbar ab Dezember 2026',
+        'hero.badge': 'MODELLIERUNG &amp; SIMULATION &bull; AUTOMATISIERUNG &bull; DATENGETRIEBENE F&amp;E',
+        'hero.headline': 'Von Physik &rarr; Daten: Entwicklung <span class="block text-tealAccent mt-1">intelligenter &amp; skalierbarer Systeme.</span>',
+        'hero.bio1': 'M.Sc.-Student der Elektromobilit&auml;t an der <strong class="text-slate-100 font-medium">FAU Erlangen-N&uuml;rnberg</strong> mit fundiertem Hintergrund in Maschinenbau und Industrieller Metallurgie (NIT Trichy). Erfahrung in physikbasierter CFD-/Thermosimulation (<span class="text-slate-100">ANSYS Fluent, SolidWorks</span>), pr&auml;diktivem Machine Learning und industriellen Qualit&auml;tssystemen.',
+        'hero.bio2': 'Kombination aus pr&auml;diktiver ML-Modellierung bei der <strong class="text-slate-100 font-medium">Daimler Truck AG</strong> (Reduktion des Vorhersagefehlers um ~60&nbsp;%) und Python/PyQt6-Testautomatisierung bei der <strong class="text-slate-100 font-medium">Siemens AG</strong> mit Six-Sigma-Prozessengineering bei <strong class="text-slate-100 font-medium">Hyundai Motor India</strong>.',
+        'hero.bio3': 'Auf der Suche nach Positionen in <span class="text-tealAccent font-medium">F&amp;E, Modellierung &amp; Simulation, Automatisierung und Digitalisierung</span> an der Schnittstelle von Ingenieurphysik, Data Science und industrieller Umsetzung. <span class="text-amberAccent font-medium">Verf&uuml;gbar ab Dezember 2026.</span>',
+        'focus.eyebrow': 'Kernkompetenzen',
+        'focus.title': 'Schwerpunkte',
+        'focus.subtitle': 'Verbindung von technischer Mechanik, Simulation, Machine Learning und Software-Automatisierung zur L&ouml;sung komplexer Entwicklungs- und Prozessaufgaben.',
+        'focus.c1.title': 'Modellierung &amp; Physikalische Simulation',
+        'focus.c1.desc': 'Thermomanagement, CAD-Konstruktion und multiphysikalische Systemmodellierung. Steigerung der thermischen Effizienz um ~22&nbsp;% durch gekoppelte CFD-Simulation und experimentelle Materialcharakterisierung.',
+        'focus.c2.title': 'Machine Learning &amp; Predictive Analytics',
+        'focus.c2.desc': 'Physikinformierte ML-Pipelines und statistische Modellierung. Benchmarking von 6 Regressionsalgorithmen mit R&sup2; = 0,9987 und ~60&nbsp;% RMSE-Reduktion f&uuml;r pr&auml;diktive Echtzeit-Analysen.',
+        'focus.c3.title': 'Workflow-Automatisierung &amp; Digitalisierung',
+        'focus.c3.desc': 'Entwicklung validierter Python-Desktopanwendungen, automatisierter Pr&uuml;fabl&auml;ufe und KPI-Reporting-Pipelines zur Vermeidung manueller Kalibrierfehler und Verk&uuml;rzung der Pr&uuml;fzeit um 30&nbsp;%.',
+        'focus.c4.title': 'Prozess- &amp; Qualit&auml;tsengineering',
+        'focus.c4.desc': 'Six-Sigma-Prozessoptimierung, strukturierte Ursachenanalyse (RCA) und agile Projektsteuerung &ndash; Reduktion der Ausschussrate um 18&nbsp;% und der Stillstandszeiten um 12&nbsp;%.',
+        'tag.thermalSim': 'Thermische Simulation',
+        'tag.matTest': 'Materialpr&uuml;fung',
+        'tag.predAnalytics': 'Predictive Analytics',
+        'tag.workflowAuto': 'Prozessautomatisierung',
+        'tag.sysVal': 'Systemvalidierung',
+        'tag.sopDev': 'SOP-Erstellung',
+        'exp.eyebrow': 'Beruflicher Werdegang',
+        'exp.title': 'Berufserfahrung',
+        'exp.subtitle': 'F&amp;E-Modellierung, industrielle Software-Automatisierung und Fertigungsengineering in Deutschland und Indien.',
+        'exp.e1.role': 'Masterand (Thesis) &mdash; Pr&auml;diktive Modellierung &amp; Simulation',
+        'exp.e1.org': 'Daimler Truck AG &bull; Stuttgart, Deutschland',
+        'exp.e1.b1': 'Entwicklung eines thermisch erweiterten ML-Alterungsmodells f&uuml;r den Elektro-Lkw <strong class="text-slate-100">eActros 600</strong> inklusive Integration gesch&auml;tzter Zellinnentemperaturen und Benchmarking von 6 ML-Regressionsalgorithmen.',
+        'exp.e1.b2': 'Erreichung von <strong class="text-slate-100">R&sup2; = 0,9987</strong> mit Random Forest sowie Reduktion des Vorhersage-RMSE um <strong class="text-slate-100">~60&nbsp;% (3,04&nbsp;% &rarr; 1,21&nbsp;%)</strong> &uuml;ber verschiedene Betriebsbedingungen im Vergleich zur Sensor-Baseline.',
+        'exp.e1.b3': 'Bereitstellung validierter Modelle f&uuml;r die Auslegung des Thermomanagements und die pr&auml;diktive Lebensdaueranalyse in Echtzeit.',
+        'exp.e2.role': 'Werkstudent &mdash; Digital Industries',
+        'exp.e2.org': 'Siemens AG &bull; Erlangen, Deutschland',
+        'exp.e2.b1': 'Konzeption und Entwicklung eines <strong class="text-slate-100">Python-/PyQt6</strong>-Automatisierungstools zur Abl&ouml;sung eines manuellen Kalibrierungsprozesses einschlie&szlig;lich umfassender technischer Dokumentation.',
+        'exp.e2.b2': 'Reduzierung manueller Bedienschritte und Vermeidung von Berechnungsfehlern durch strukturierte Prozessautomatisierung und Systemvalidierung.',
+        'exp.e3.role': 'Studentische Hilfskraft (Forschungslabor) &mdash; Thermo- &amp; Werkstofftechnik',
+        'exp.e3.org': 'Friedrich-Alexander-Universit&auml;t Erlangen-N&uuml;rnberg (FAU) &bull; Erlangen, Deutschland',
+        'exp.e3.b1': 'Durchf&uuml;hrung von Thermomanagement-Simulationen und Materialanalysen in der Forschungsgruppe Energiespeichersysteme; Steigerung der thermischen Effizienz um <strong class="text-slate-100">~22&nbsp;%</strong> und Verk&uuml;rzung der Pr&uuml;fzeit um <strong class="text-slate-100">30&nbsp;%</strong> durch Datenautomatisierung.',
+        'exp.e4.role': 'Produktmanager',
+        'exp.e4.org': 'The Federal Bank Pvt Ltd &bull; Indien',
+        'exp.e4.b1': 'End-to-End-Steuerung von mehr als 3 parallelen funktions&uuml;bergreifenden Produktprojekten in enger Zusammenarbeit mit Engineering, Compliance und externen Fintech-Partnern nach agiler Methodik.',
+        'exp.e4.b2': 'Entwicklung datengetriebener Go-to-Market-Strategien mittels Predictive Analytics mit <strong class="text-slate-100">25&nbsp;% Umsatzwachstum (4,2&nbsp;Mio.)</strong> und <strong class="text-slate-100">30&nbsp;% schnellerer</strong> Lead-Konversion.',
+        'exp.e4.b3': 'Erstellung von SOPs, Projektdokumentationen und regulatorischen Compliance-Richtlinien f&uuml;r &uuml;ber 5 Stakeholder-Bereiche.',
+        'exp.e5.role': 'Produktionsingenieur (Praktikant)',
+        'exp.e5.org': 'Hyundai Motor India &bull; Chennai, Indien',
+        'exp.e5.b1': 'Anwendung von Six-Sigma-Methoden und Echtzeit-Prozess&uuml;berwachung; Reduktion der Fehlerquote um <strong class="text-slate-100">18&nbsp;%</strong> und Senkung der Montagestillst&auml;nde um <strong class="text-slate-100">12&nbsp;%</strong>.',
+        'exp.e5.b2': 'Durchf&uuml;hrung strukturierter Fehleranalysen an Motor- und Antriebsstrangsystemen einschlie&szlig;lich Ursachenforschung und Korrekturma&szlig;nahmen.',
+        'edu.eyebrow': 'Qualifikationen',
+        'edu.title': 'Technisches Profil &amp; Ausbildung',
+        'edu.subtitle': 'Ingenieur- und materialwissenschaftliche Hochschulabschl&uuml;sse kombiniert mit interdisziplin&auml;ren Software- und Analysetools.',
+        'skills.s1.title': 'Python &amp; Data Science',
+        'skills.s1.items': 'Python, Machine Learning (Regression, Random Forest), Databricks, Azure ML, Git, Workflow-Automatisierung, PyQt6',
+        'skills.s2.title': 'Simulation &amp; Engineering',
+        'skills.s2.items': 'ANSYS Fluent, SolidWorks, Thermische &amp; Multiphysikalische Modellierung, Materialcharakterisierung, LaTeX',
+        'skills.s3.title': 'Prozess &amp; Qualit&auml;t',
+        'skills.s3.items': 'FMEA, Six Sigma, 8D-Probleml&ouml;sung, Ursachenanalyse (RCA), PPAP, Prozessaudits &amp; -validierung, SOPs',
+        'skills.s4.title': 'Daten, BI &amp; Projektmanagement',
+        'skills.s4.items': 'Power BI, SQL, Excel, KPI- &amp; Stakeholder-Reporting, Statistische Analyse, Agile, JIRA, MS Office',
+        'edu.d1.title': 'M.Sc. Elektromobilit&auml;t',
+        'edu.d1.date': '2023 &ndash; Heute',
+        'edu.d1.gpa': 'Note: 2,4',
+        'edu.d1.courses': 'Schwerpunkte: Energiespeichersysteme, Batteriespeichersysteme, Aerodynamik &amp; Akustik, Machine Learning',
+        'edu.d2.title': 'M.Tech. Industrielle Metallurgie',
+        'edu.d2.org': 'National Institute of Technology Tiruchirappalli (NIT Trichy), Indien',
+        'edu.d2.gpa': 'Note: 1,4',
+        'edu.d2.medal': 'Goldmedaille',
+        'edu.d2.courses': 'Schwerpunkte: Pr&uuml;ftechnik &amp; Charakterisierung, Spektroskopie, Energie- &amp; Batterietechnologien, Zerst&ouml;rungsfreie Pr&uuml;fung',
+        'edu.d3.title': 'B.Tech. Maschinenbau',
+        'edu.d3.org': 'Anna University, Chennai, Indien',
+        'edu.d3.gpa': 'Note: 1,6',
+        'lang.title': 'Sprachen',
+        'lang.en': 'Englisch',
+        'lang.enLevel': 'Verhandlungssicher (C1)',
+        'lang.de': 'Deutsch',
+        'lang.deLevel': 'B1 (auf dem Weg zu B2)',
+        'lang.ta': 'Tamil',
+        'lang.taLevel': 'Muttersprache',
+        'lang.hi': 'Hindi',
+        'lang.hiLevel': 'Flie&szlig;end',
+        'honors.title': 'Auszeichnungen &amp; Engagement',
+        'honors.h1': '<strong class="text-slate-100">Goldmedaille:</strong> Auszeichnung f&uuml;r herausragende Studienleistungen im M.Tech. Industrielle Metallurgie am NIT Trichy.',
+        'honors.h2': '<strong class="text-slate-100">F&uuml;hrungsverantwortung:</strong> Organisation von Mentoring-Programmen als Pr&auml;sident des <em>Pupil for Pupil Committee</em> f&uuml;r &uuml;ber 1.000 benachteiligte Sch&uuml;lerinnen und Sch&uuml;ler.',
+        'honors.h3': '<strong class="text-slate-100">Nachhaltigkeit:</strong> Hauptvortrag zur Reduzierung von Plastikabf&auml;llen im Rahmen der NSS-Initiative.',
+        'contact.eyebrow': 'Kontakt',
+        'contact.title': 'Verf&uuml;gbar ab Dezember 2026',
+        'contact.subtitle': 'Offen f&uuml;r Positionen in F&amp;E, Modellierung &amp; Simulation, Automatisierung und Digitalisierung in Industrie und Technologie.',
+        'footer.location': 'Erlangen / Stuttgart, Deutschland',
+      },
+    };
+
+    /**
+     * Switches the webpage language between English ('en') and German ('de'),
+     * updates toggle button states, persists preference in localStorage, and sets <html lang>.
+     */
+    function setLanguage(lang) {
+      const targetLang = lang === 'de' ? 'de' : 'en';
+      const dict = TRANSLATIONS[targetLang];
+      if (!dict) return;
+
+      document.documentElement.setAttribute('lang', targetLang);
+      document.title = dict.pageTitle;
+
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) {
+          el.innerHTML = dict[key];
+        }
+      });
+
+      const btnEn = document.getElementById('lang-btn-en');
+      const btnDe = document.getElementById('lang-btn-de');
+      if (btnEn && btnDe) {
+        const isDe = targetLang === 'de';
+        btnEn.setAttribute('aria-pressed', String(!isDe));
+        btnDe.setAttribute('aria-pressed', String(isDe));
+
+        btnEn.className = isDe
+          ? 'px-2.5 py-1 rounded-full font-semibold transition-all text-slate-400 hover:text-slate-100'
+          : 'px-2.5 py-1 rounded-full font-semibold transition-all bg-tealAccent text-charcoal-950';
+
+        btnDe.className = isDe
+          ? 'px-2.5 py-1 rounded-full font-semibold transition-all bg-tealAccent text-charcoal-950'
+          : 'px-2.5 py-1 rounded-full font-semibold transition-all text-slate-400 hover:text-slate-100';
+      }
+
+      try {
+        localStorage.setItem('portfolio_lang', targetLang);
+      } catch (e) {
+        // Ignore storage restrictions in private browsing
+      }
+    }
+
+    // Initialize saved language preference on load
+    (function initSavedLanguage() {
+      try {
+        const savedLang = localStorage.getItem('portfolio_lang');
+        if (savedLang === 'de' || savedLang === 'en') {
+          setLanguage(savedLang);
+        }
+      } catch (e) {
+        // Default remains English
+      }
+    })();
+
+    /**
+     * Seamless Fallback if profile-pic-2.png is not yet present in the directory.
+     * Renders an engineered dark-slate portrait emblem so the frame never shows a broken image icon.
+     */
+    function handlePhotoFallback(imgEl) {
+      const svgFallback = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320">
+          <defs>
+            <radialGradient id="bg" cx="50%" cy="35%" r="70%">
+              <stop offset="0%" stop-color="#28313b"/>
+              <stop offset="100%" stop-color="#141517"/>
+            </radialGradient>
+            <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4fd1c5"/>
+              <stop offset="100%" stop-color="#d6893e"/>
+            </linearGradient>
+          </defs>
+          <rect width="320" height="320" fill="url(#bg)"/>
+          <circle cx="160" cy="160" r="134" fill="none" stroke="rgba(79,209,197,0.18)" stroke-width="1" stroke-dasharray="4 6"/>
+          <circle cx="160" cy="118" r="46" fill="#1e2329" stroke="url(#accent)" stroke-width="2.5"/>
+          <path d="M78 274 C78 214, 242 214, 242 274" fill="#1e2329" stroke="url(#accent)" stroke-width="2.5"/>
+          <text x="160" y="128" text-anchor="middle" fill="#e2e8f0" font-family="Inter, sans-serif" font-size="28" font-weight="700" letter-spacing="2">KEC</text>
+          <text x="160" y="252" text-anchor="middle" fill="#4fd1c5" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">M.SC. ELECTROMOBILITY</text>
+        </svg>`;
+      imgEl.onerror = null;
+      imgEl.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgFallback);
+    }
+
+    /**
+     * Lively Mechanical Engineering CAD & Interlocking Gear Train Background
+     * Responds dynamically to page scroll position and scroll velocity while maintaining
+     * an ambient idle mechanical motion.
+     */
+    (function initMechanicalBackground() {
+      const canvas = document.getElementById('mechanical-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      let width = 0;
+      let height = 0;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      // Scroll tracking with smooth spring interpolation
+      let targetScrollY = window.scrollY || 0;
+      let smoothScrollY = targetScrollY;
+      let ambientAngle = 0;
+
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      window.addEventListener('resize', resize);
+      window.addEventListener('scroll', () => {
+        targetScrollY = window.scrollY || 0;
+      }, { passive: true });
+      resize();
+
+      /**
+       * Draws a precision involute-style mechanical gear with pitch circle, hub, spokes, and keyway.
+       */
+      function drawGear(cx, cy, outerR, teeth, angle, strokeColor, fillColor, spokeCount) {
+        const innerR = outerR * 0.87;
+        const pitchR = outerR * 0.935;
+        const hubR = outerR * 0.28;
+        const step = (Math.PI * 2) / teeth;
+
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(angle);
+
+        // Gear Tooth Profile
+        ctx.beginPath();
+        for (let i = 0; i < teeth; i++) {
+          const a0 = i * step;
+          const a1 = a0 + step * 0.18;
+          const a2 = a0 + step * 0.32;
+          const a3 = a0 + step * 0.62;
+          const a4 = a0 + step * 0.76;
+
+          const p0x = Math.cos(a0) * innerR;
+          const p0y = Math.sin(a0) * innerR;
+          if (i === 0) ctx.moveTo(p0x, p0y);
+          else ctx.lineTo(p0x, p0y);
+
+          ctx.lineTo(Math.cos(a1) * innerR, Math.sin(a1) * innerR);
+          ctx.lineTo(Math.cos(a2) * outerR, Math.sin(a2) * outerR);
+          ctx.lineTo(Math.cos(a3) * outerR, Math.sin(a3) * outerR);
+          ctx.lineTo(Math.cos(a4) * innerR, Math.sin(a4) * innerR);
+        }
+        ctx.closePath();
+
+        if (fillColor) {
+          ctx.fillStyle = fillColor;
+          ctx.fill();
+        }
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = 1.15;
+        ctx.stroke();
+
+        // Dashed Pitch Circle (CAD standard)
+        ctx.save();
+        ctx.setLineDash([4, 5]);
+        ctx.beginPath();
+        ctx.arc(0, 0, pitchR, 0, Math.PI * 2);
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = 0.75;
+        ctx.stroke();
+        ctx.restore();
+
+        // Inner Rim & Spokes
+        const rimR = innerR * 0.78;
+        ctx.beginPath();
+        ctx.arc(0, 0, rimR, 0, Math.PI * 2);
+        ctx.stroke();
+
+        if (spokeCount > 0) {
+          for (let s = 0; s < spokeCount; s++) {
+            const sa = (s * Math.PI * 2) / spokeCount;
+            ctx.beginPath();
+            ctx.moveTo(Math.cos(sa) * hubR, Math.sin(sa) * hubR);
+            ctx.lineTo(Math.cos(sa) * rimR, Math.sin(sa) * rimR);
+            ctx.stroke();
+          }
+        }
+
+        // Center Hub & Shaft Bore
+        ctx.beginPath();
+        ctx.arc(0, 0, hubR, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(0, 0, hubR * 0.42, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.restore();
+      }
+
+      /**
+       * Draws a reciprocating crank-slider linkage driven by gear rotation.
+       */
+      function drawLinkage(pivotX, pivotY, crankR, rodLen, theta, color) {
+        const pinX = pivotX + Math.cos(theta) * crankR;
+        const pinY = pivotY + Math.sin(theta) * crankR;
+        const dx = Math.sqrt(Math.max(0, rodLen * rodLen - Math.pow(pinY - pivotY, 2)));
+        const sliderX = pinX + dx;
+        const sliderY = pivotY;
+
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.2;
+
+        // Guide Track
+        ctx.save();
+        ctx.setLineDash([3, 4]);
+        ctx.beginPath();
+        ctx.moveTo(pivotX + rodLen - crankR - 25, sliderY);
+        ctx.lineTo(pivotX + rodLen + crankR + 25, sliderY);
+        ctx.stroke();
+        ctx.restore();
+
+        // Connecting Rod
+        ctx.beginPath();
+        ctx.moveTo(pinX, pinY);
+        ctx.lineTo(sliderX, sliderY);
+        ctx.stroke();
+
+        // Crank Arm
+        ctx.beginPath();
+        ctx.moveTo(pivotX, pivotY);
+        ctx.lineTo(pinX, pinY);
+        ctx.stroke();
+
+        // Slider Block
+        ctx.strokeRect(sliderX - 16, sliderY - 10, 32, 20);
+
+        // Joints
+        [
+          [pivotX, pivotY],
+          [pinX, pinY],
+          [sliderX, sliderY],
+        ].forEach(([jx, jy]) => {
+          ctx.beginPath();
+          ctx.arc(jx, jy, 3.5, 0, Math.PI * 2);
+          ctx.fillStyle = '#141517';
+          ctx.fill();
+          ctx.stroke();
+        });
+
+        ctx.restore();
+      }
+
+      /**
+       * Draws subtle CAD engineering blueprint grid, crosshair markers, and vernier ticks.
+       */
+      function drawBlueprintGrid(scrollOffset) {
+        const gridSpacing = 90;
+        const parallaxY = -(scrollOffset * 0.12) % gridSpacing;
+
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.035)';
+        ctx.lineWidth = 1;
+
+        for (let x = 0; x < width; x += gridSpacing) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, height);
+          ctx.stroke();
+        }
+
+        for (let y = parallaxY; y < height; y += gridSpacing) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+
+        // Right-edge Vernier Caliper Scale reacting to scroll
+        const scaleX = width - 22;
+        ctx.strokeStyle = 'rgba(79, 209, 197, 0.14)';
+        ctx.lineWidth = 1;
+        const tickSpacing = 18;
+        const tickShift = -(scrollOffset * 0.35) % (tickSpacing * 5);
+
+        for (let i = -5; i < height / tickSpacing + 5; i++) {
+          const ty = i * tickSpacing + tickShift;
+          const isMajor = Math.abs(i) % 5 === 0;
+          ctx.beginPath();
+          ctx.moveTo(scaleX - (isMajor ? 11 : 5), ty);
+          ctx.lineTo(scaleX, ty);
+          ctx.stroke();
+        }
+      }
+
+      function render() {
+        // Smoothly ease scroll value & advance slow ambient mechanical idle
+        smoothScrollY += (targetScrollY - smoothScrollY) * 0.09;
+        ambientAngle += 0.0012;
+
+        ctx.clearRect(0, 0, width, height);
+
+        // 1. CAD Grid & Scroll Vernier Scale
+        drawBlueprintGrid(smoothScrollY);
+
+        // Drive angle combines continuous ambient motion + scroll displacement
+        const baseTheta = ambientAngle + smoothScrollY * 0.0042;
+        const verticalDrift = Math.sin(smoothScrollY * 0.0015) * 18;
+
+        // 2. Upper-Right Meshing Gear Train (Teal & Slate CAD strokes)
+        const g1X = width * 0.86;
+        const g1Y = height * 0.24 - verticalDrift * 0.7;
+        const r1 = Math.min(135, Math.max(85, width * 0.1));
+        const teeth1 = 24;
+
+        // Pinion meshed cleanly at distance (pitchR1 + pitchR2)
+        const teeth2 = 14;
+        const r2 = r1 * (teeth2 / teeth1);
+        const meshDist12 = r1 * 0.935 + r2 * 0.935;
+        const meshAngle12 = Math.PI * 0.78;
+        const g2X = g1X + Math.cos(meshAngle12) * meshDist12;
+        const g2Y = g1Y + Math.sin(meshAngle12) * meshDist12;
+
+        // Opposite phase rotation for meshed gears
+        const theta1 = baseTheta;
+        const theta2 = -baseTheta * (teeth1 / teeth2) + Math.PI / teeth2;
+
+        drawGear(g1X, g1Y, r1, teeth1, theta1, 'rgba(79, 209, 197, 0.13)', 'rgba(79, 209, 197, 0.015)', 6);
+        drawGear(g2X, g2Y, r2, teeth2, theta2, 'rgba(214, 137, 62, 0.15)', 'rgba(214, 137, 62, 0.015)', 4);
+
+        // 3. Lower-Left Large Flywheel Gear + Crank-Slider Linkage
+        const g3X = width * 0.11;
+        const g3Y = height * 0.78 + verticalDrift;
+        const r3 = Math.min(165, Math.max(95, width * 0.12));
+        const teeth3 = 28;
+        const theta3 = -baseTheta * 0.75;
+
+        drawGear(g3X, g3Y, r3, teeth3, theta3, 'rgba(148, 163, 184, 0.11)', 'rgba(148, 163, 184, 0.01)', 8);
+
+        if (width > 640) {
+          drawLinkage(g3X, g3Y, r3 * 0.42, r3 * 1.45, theta3, 'rgba(79, 209, 197, 0.12)');
+        }
+
+        requestAnimationFrame(render);
+      }
+
+      render();
+
+      // Active Section Highlight on Scroll
+      const sections = document.querySelectorAll('section[id], footer[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      window.addEventListener('scroll', () => {
+        let current = 'overview';
+        const scrollMarker = window.scrollY + 160;
+        sections.forEach((sec) => {
+          if (scrollMarker >= sec.offsetTop) {
+            current = sec.id;
+          }
+        });
+        navLinks.forEach((link) => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+        });
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>
