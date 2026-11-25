@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karthikeyan Elango Chitra | M.Sc. Electromobility</title>
+  <!-- Load Inter font with clean system fallbacks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       Design Tokens & Minimalist Palette
+       Low-contrast, neutral academic/engineering aesthetic
+       ========================================================================== */
+    :root {
+      --bg-page: #fafafa;
+      --bg-surface: #ffffff;
+      --border-subtle: #e5e7eb;
+      --border-strong: #d1d5db;
+      --text-primary: #1f2937;
+      --text-secondary: #4b5563;
+      --text-muted: #6b7280;
+      --accent-slate: #2c5282;
+      --accent-hover: #1e3a5f;
+      --tag-bg: #f3f4f6;
+      --max-width: 860px;
+    }
+
+    /* Reset & Base Typography */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--accent-slate);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    a:hover {
+      color: var(--accent-hover);
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       Top Navigation Bar
+       ========================================================================== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-slate);
+    }
+
+    .btn-cv {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent-slate);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-cv:hover {
+      background-color: var(--tag-bg);
+      border-color: var(--accent-slate);
+      text-decoration: none;
+    }
+
+    /* ==========================================================================
+       Main Container & Section Architecture
+       ========================================================================== */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    section {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-slate);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ==========================================================================
+       Hero / About Section
+       ========================================================================== */
+    .hero {
+      padding-top: 0.5rem;
+      padding-bottom: 2.25rem;
+    }
+
+    .hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-identity h1 {
+      font-size: 1.85rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      line-height: 1.25;
+      margin-bottom: 0.35rem;
+    }
+
+    .hero-role {
+      font-size: 1.02rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 0.85rem;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 1.15rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .contact-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .contact-separator {
+      color: var(--border-strong);
+      user-select: none;
+    }
+
+    /* Optional Profile Avatar with Clean Initials Monogram Fallback */
+    .avatar-wrapper {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 1px solid var(--border-strong);
+      background-color: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .avatar-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .avatar-initials {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--accent-slate);
+    }
+
+    .hero-summary {
+      font-size: 0.96rem;
+      color: var(--text-secondary);
+      max-width: 76ch;
+    }
+
+    /* ==========================================================================
+       Experience Timeline / Entries
+       ========================================================================== */
+    .entry-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.85rem;
+    }
+
+    .entry-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.25rem 1rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .entry-title {
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .entry-org {
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .entry-date {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .entry-bullets {
+      margin-left: 1.15rem;
+      margin-bottom: 0.65rem;
+      color: var(--text-secondary);
+      font-size: 0.93rem;
+    }
+
+    .entry-bullets li {
+      margin-bottom: 0.35rem;
+    }
+
+    .entry-bullets li:last-child {
+      margin-bottom: 0;
+    }
+
+    .skills-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.25rem;
+    }
+
+    .skill-pill {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      background-color: var(--tag-bg);
+      border: 1px solid var(--border-subtle);
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+    }
+
+    /* ==========================================================================
+       Core Skills 2x2 Grid
+       ========================================================================== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .skill-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 1.1rem 1.25rem;
+    }
+
+    .skill-card h3 {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.45rem;
+    }
+
+    .skill-card p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* ==========================================================================
+       Education Section
+       ========================================================================== */
+    .edu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.35rem;
+    }
+
+    .edu-meta {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-top: 0.15rem;
+    }
+
+    .edu-coursework {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ==========================================================================
+       Languages & Additional Highlights Two-Column Layout
+       ========================================================================== */
+    .two-col-section {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 2rem;
+    }
+
+    .lang-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    .lang-list strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .highlight-list {
+      margin-left: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    .highlight-list strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* ==========================================================================
+       Minimal Footer
+       ========================================================================== */
+    footer {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 3rem;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       Responsive Breakpoints
+       ========================================================================== */
+    @media (max-width: 680px) {
+      .hero-header {
+        flex-direction: column-reverse;
+        gap: 1rem;
+      }
+
+      .avatar-wrapper {
+        width: 72px;
+        height: 72px;
+      }
+
+      .skills-grid,
+      .two-col-section {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-separator {
+        display: none;
+      }
+
+      .contact-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+      }
+    }
+
+    /* ==========================================================================
+       Clean Print-Friendly Styles (Save as PDF)
+       ========================================================================== */
+    @media print {
+      body {
+        background-color: #ffffff;
+        font-size: 10.5pt;
+        line-height: 1.45;
+      }
+
+      .navbar {
+        display: none;
+      }
+
+      .container {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      section {
+        padding: 1rem 0;
+        break-inside: avoid;
+      }
+
+      .skill-card {
+        border: 1px solid #d1d5db;
+        padding: 0.75rem;
+      }
+
+      a {
+        color: #1f2937;
+        text-decoration: none;
+      }
+
+      footer {
+        padding: 1rem 0 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Navigation -->
+  <nav class="navbar" aria-label="Primary Navigation">
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#highlights">Highlights</a></li>
+      </ul>
+      <!-- Upload Karthikeyan_Resume_pg.pdf to the same GitHub repository folder so this link works directly -->
+      <a href="Karthikeyan_Resume_pg.pdf" target="_blank" rel="noopener noreferrer" class="btn-cv">
+        Download CV (PDF)
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="container">
+
+    <!-- 1. Hero / About Section -->
+    <section id="about" class="hero">
+      <div class="hero-header">
+        <div class="hero-identity">
+          <h1>Karthikeyan Elango Chitra</h1>
+          <p class="hero-role">M.Sc. Electromobility | Battery Modelling, Simulation &amp; Digitalization</p>
+          <div class="contact-row">
+            <span class="contact-item">
+              <a href="tel:+4915236248211">+49 1523 6248211</a>
+            </span>
+            <span class="contact-separator" aria-hidden="true">|</span>
+            <span class="contact-item">
+              <a href="mailto:eckarthik97@gmail.com">eckarthik97@gmail.com</a>
+            </span>
+            <span class="contact-separator" aria-hidden="true">|</span>
+            <span class="contact-item">
+              <!-- Replace the href below with your exact LinkedIn profile URL -->
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </span>
+            <span class="contact-separator" aria-hidden="true">|</span>
+            <span class="contact-item">
+              <!-- Replace the href below with your exact GitHub profile URL -->
+              <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </span>
+          </div>
+        </div>
+
+        <!--
+          Optional Profile Photo:
+          To display your photo, upload a square headshot named 'profile.jpg' to your GitHub folder
+          and uncomment the <img> tag below (removing the <span class="avatar-initials"> line).
+        -->
+        <div class="avatar-wrapper" aria-label="Profile Monogram">
+          <!-- <img src="profile.jpg" alt="Karthikeyan Elango Chitra"> -->
+          <span class="avatar-initials">KEC</span>
+        </div>
+      </div>
+
+      <p class="hero-summary">
+        M.Sc. Electromobility student at FAU Erlangen with a mechanical and materials engineering background. Built machine learning models that cut battery aging prediction error by about 60%, automated and validated test workflows in Python, and applied Six Sigma in automotive production. Available from November 2026 for opportunities in modelling, simulation, and digitalization.
+      </p>
+    </section>
+
+    <!-- 2. Professional Experience Section -->
+    <section id="experience">
+      <h2 class="section-title">Professional Experience</h2>
+      <div class="entry-list">
+
+        <!-- Role 1 -->
+        <article class="entry-item">
+          <div class="entry-header">
+            <div>
+              <span class="entry-title">Thesis Student</span>
+              <span class="entry-org">&middot; Daimler Truck AG, Stuttgart</span>
+            </div>
+            <span class="entry-date">03/2026 &ndash; 08/2026</span>
+          </div>
+          <ul class="entry-bullets">
+            <li>Developed a thermal-enhanced machine learning battery aging model for the eActros 600 truck, integrating estimated jelly-roll temperature into the aging-model pipeline and benchmarking 6 ML regression algorithms.</li>
+            <li>Achieved R&sup2; = 0.9987 with Random Forest and reduced State of Health (SoH) prediction RMSE by ~60% (from 3.04% to 1.21%) across operating conditions compared with the NTC-temperature baseline.</li>
+            <li>Delivered outcomes directly applicable to battery pack thermal management design and real-time predictive lifetime modelling.</li>
+          </ul>
+          <div class="skills-inline">
+            <span class="skill-pill">Machine Learning</span>
+            <span class="skill-pill">Databricks</span>
+            <span class="skill-pill">Microsoft Azure</span>
+            <span class="skill-pill">Git</span>
+            <span class="skill-pill">Data Handling</span>
+            <span class="skill-pill">Battery Aging</span>
+          </div>
+        </article>
+
+        <!-- Role 2 -->
+        <article class="entry-item">
+          <div class="entry-header">
+            <div>
+              <span class="entry-title">Working Student</span>
+              <span class="entry-org">&middot; Siemens AG (Digital Industries), Erlangen</span>
+            </div>
+            <span class="entry-date">05/2025 &ndash; 01/2026</span>
+          </div>
+          <ul class="entry-bullets">
+            <li>Designed and built a Python and PyQt6 automation tool to replace a manual calibration workflow, complete with technical documentation for long-term team adoption.</li>
+            <li>Reduced manual operator steps and calculation errors through structured process automation and system validation.</li>
+          </ul>
+          <div class="skills-inline">
+            <span class="skill-pill">Python</span>
+            <span class="skill-pill">PyQt6</span>
+            <span class="skill-pill">Technical Documentation</span>
+            <span class="skill-pill">Git</span>
+            <span class="skill-pill">System Validation</span>
+          </div>
+        </article>
+
+        <!-- Role 3 -->
+        <article class="entry-item">
+          <div class="entry-header">
+            <div>
+              <span class="entry-title">Research Lab Student</span>
+              <span class="entry-org">&middot; Team Battery Storage Systems, FAU Erlangen</span>
+            </div>
+            <span class="entry-date">03/2024 &ndash; 11/2024</span>
+          </div>
+          <ul class="entry-bullets">
+            <li>Conducted thermal management and material analysis within the Battery Storage Systems team, improving Li-ion battery thermal efficiency by ~22% and reducing material testing time by 30% through data automation.</li>
+          </ul>
+          <div class="skills-inline">
+            <span class="skill-pill">ANSYS Fluent</span>
+            <span class="skill-pill">SolidWorks</span>
+            <span class="skill-pill">Thermal Simulation</span>
+            <span class="skill-pill">Data Automation</span>
+            <span class="skill-pill">Materials Testing</span>
+            <span class="skill-pill">LaTeX</span>
+          </div>
+        </article>
+
+        <!-- Role 4 -->
+        <article class="entry-item">
+          <div class="entry-header">
+            <div>
+              <span class="entry-title">Product Manager</span>
+              <span class="entry-org">&middot; The Federal Bank Pvt Ltd</span>
+            </div>
+            <span class="entry-date">2021 &ndash; 2023</span>
+          </div>
+          <ul class="entry-bullets">
+            <li>Managed end-to-end delivery of 3+ simultaneous cross-functional product initiatives, coordinating across Engineering, Compliance, and external Fintech partners using Agile methodology.</li>
+            <li>Developed data-driven go-to-market strategies using predictive analytics, achieving 25% sales growth (4.2M) across retail products and a 30% improvement in lead conversion time.</li>
+            <li>Authored SOPs, project documentation, and regulatory compliance frameworks, ensuring structured handovers across 5+ stakeholder functions.</li>
+          </ul>
+          <div class="skills-inline">
+            <span class="skill-pill">Project Management</span>
+            <span class="skill-pill">Agile</span>
+            <span class="skill-pill">JIRA</span>
+            <span class="skill-pill">Stakeholder Coordination</span>
+            <span class="skill-pill">Predictive Analytics</span>
+          </div>
+        </article>
+
+        <!-- Role 5 -->
+        <article class="entry-item">
+          <div class="entry-header">
+            <div>
+              <span class="entry-title">Production Engineer (Intern)</span>
+              <span class="entry-org">&middot; Hyundai Motor India</span>
+            </div>
+            <span class="entry-date">2020 &ndash; 2021</span>
+          </div>
+          <ul class="entry-bullets">
+            <li>Applied Six Sigma methodology and real-time process monitoring, achieving an 18% reduction in defect rates and a 12% decrease in assembly downtime.</li>
+            <li>Performed structured failure analysis of engine and drivetrain systems, leading root-cause investigations and defining corrective actions.</li>
+          </ul>
+          <div class="skills-inline">
+            <span class="skill-pill">FMEA</span>
+            <span class="skill-pill">8D Problem Solving</span>
+            <span class="skill-pill">Process Auditing</span>
+            <span class="skill-pill">PPAP</span>
+            <span class="skill-pill">Root Cause Analysis</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 3. Core Skills Section -->
+    <section id="skills">
+      <h2 class="section-title">Core Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>Python &amp; Data Science</h3>
+          <p>Python, Machine Learning (Regression, Random Forest), Databricks, Azure ML, Git, Workflow Automation, PyQt6</p>
+        </div>
+        <div class="skill-card">
+          <h3>Process &amp; Quality Engineering</h3>
+          <p>FMEA, Six Sigma, 8D Problem Solving, Root Cause Analysis (RCA), PPAP, Process Auditing, Process Validation, SOP Development, Technical Documentation</p>
+        </div>
+        <div class="skill-card">
+          <h3>Data &amp; Reporting</h3>
+          <p>Power BI, SQL, Excel, KPI &amp; Stakeholder Reporting, Data Analysis, Statistical Analysis, Data Visualization, Predictive Analytics</p>
+        </div>
+        <div class="skill-card">
+          <h3>Project &amp; Collaboration</h3>
+          <p>Agile, JIRA, Cross-Functional Coordination, Stakeholder Communication, MS Office (Excel, PowerPoint, Word)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Education Section -->
+    <section id="education">
+      <h2 class="section-title">Education</h2>
+      <div class="edu-list">
+
+        <article class="entry-item">
+          <div class="entry-header">
+            <div>
+              <span class="entry-title">M.Sc. Electromobility</span>
+              <span class="entry-org">&middot; Friedrich-Alexander-Universit&auml;t Erlangen-N&uuml;rnberg (FAU), Germany</span>
+            </div>
+            <span class="entry-date">2023 &ndash; Present</span>
+          </div>
+          <p class="edu-meta">GPA: 2.4</p>
+          <p class="edu-coursework">Coursework: Battery Storage Systems, Energy Storage Systems, Aerodynamics &amp; Acoustics, Machine Learning</p>
+        </article>
+
+        <article class="entry-item">
+          <div class="entry-header">
+            <div>
+              <span class="entry-title">Master of Technology: Industrial Metallurgy</span>
+              <span class="entry-org">&middot; National Institute of Technology Tiruchirappalli, India</span>
+            </div>
+            <span class="entry-date">2019 &ndash; 2021</span>
+          </div>
+          <p class="edu-meta">GPA: 1.4</p>
+          <p class="edu-coursework">Coursework: Testing and Characterization, Spectroscopy, Battery Technologies, Non-Destructive Testing</p>
+        </article>
+
+        <article class="entry-item">
+          <div class="entry-header">
+            <div>
+              <span class="entry-title">Bachelor of Technology: Mechanical Engineering</span>
+              <span class="entry-org">&middot; Anna University, Chennai, India</span>
+            </div>
+            <span class="entry-date">2014 &ndash; 2018</span>
+          </div>
+          <p class="edu-meta">GPA: 1.6</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 5. Languages & Additional Highlights -->
+    <section id="highlights">
+      <div class="two-col-section">
+        <div>
+          <h2 class="section-title">Languages</h2>
+          <ul class="lang-list">
+            <li><strong>English:</strong> Fluent (C1)</li>
+            <li><strong>German:</strong> B1 (actively developing towards B2)</li>
+            <li><strong>Hindi:</strong> Fluent</li>
+            <li><strong>Tamil:</strong> Native</li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="section-title">Additional Highlights</h2>
+          <ul class="highlight-list">
+            <li><strong>Gold Medalist:</strong> Awarded for academic excellence in M.Tech at NIT Tiruchirappalli.</li>
+            <li><strong>Leadership:</strong> Organized mentorship programs as President of the Pupil for Pupil Committee, impacting over 1,000 underprivileged students.</li>
+            <li><strong>Sustainability Advocacy:</strong> Delivered a keynote address on plastic waste reduction under the NSS Initiative.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Minimal Footer -->
+  <footer>
+    <span>&copy; 2026 Karthikeyan Elango Chitra</span>
+    <a href="mailto:eckarthik97@gmail.com">eckarthik97@gmail.com</a>
+  </footer>
+
+</body>
+</html>
